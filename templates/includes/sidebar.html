@@ -1,0 +1,654 @@
+{% load static %}
+
+
+{% if request.user.user_type == "1" %}
+
+
+<nav class="sidebar sidebar-offcanvas" id="sidebar">
+  <ul class="nav">
+    <li class="nav-item nav-profile">
+      <a class="nav-link" href="{% url 'admin_home' %}">
+        <div class="profile-image">
+          {% if request.user.profile_pic %}
+          <img class="img-xs rounded-circle" src="/{{ request.user.profile_pic }}" alt="profile image">
+          {% else %}
+          <img class="img-xs rounded-circle" src="/static/images/default_profile.png" alt="profile image">
+          {% endif %}
+          <div class="dot-indicator bg-success"></div>
+        </div>
+        <div class="text-wrapper">
+          <p class="profile-name">{{ request.user.first_name }} {{ request.user.last_name }}</p>
+          <p class="designation">Администратор</p>
+        </div>
+      </a>
+    </li>
+
+    <li class="nav-item nav-category">
+      <span class="nav-link">Smart Traffic Control</span>
+    </li>
+
+    
+    <li class="nav-item">
+      <a class="nav-link d-flex align-items-center" href="{% url 'admin_home' %}" >
+        <span class="menu-title">Начало</span>
+        <i class="menu-arrow icon-arrow-right"></i>
+      </a>
+</li>
+
+    <li class="nav-item">
+      <a class="nav-link d-flex align-items-center" href="#" onclick="toggleMenu('Menu1', this, false)">
+        <span class="menu-title">Сигнали</span>
+        <i class="menu-arrow icon-arrow-right"></i>
+      </a>
+      <ul class="nav flex-column sub-menu" id="Menu1" style="display: none;">
+
+
+        <li class="nav-item">
+          <a class="nav-link d-flex align-items-center" href="#" onclick="toggleMenu('Menu11', this, true)">
+            <span class="menu-title with-space">Категории</span> 
+            <i class="menu-arrow icon-arrow-right"></i>
+          </a>
+          <ul class="nav flex-column sub-menu" id="Menu11" style="display: none; padding-left: 15px;">
+            <li class="nav-item"><a class="nav-link" href="{% url 'add_category' %}">Добавяне</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'manage_category' %}">Управление</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link d-flex align-items-center" href="#" onclick="toggleMenu('Menu12', this, true)">
+            <span class="menu-title with-space">Под категории</span> 
+            <i class="menu-arrow icon-arrow-right"></i>
+          </a>
+          <ul class="nav flex-column sub-menu" id="Menu12" style="display: none; padding-left: 15px;">
+            <li class="nav-item"><a class="nav-link" href="{% url 'add_subcategory' %}">Добавяне</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'manage_subcategory' %}">Управление</a></li>
+          </ul>
+        </li>
+
+
+        <li class="nav-item">
+          <a class="nav-link d-flex align-items-center" href="#" onclick="toggleMenu('Menu13', this, true)">
+            <span class="menu-title with-space">Населени места</span> 
+            <i class="menu-arrow icon-arrow-right"></i>
+          </a>
+          <ul class="nav flex-column sub-menu" id="Menu13" style="display: none; padding-left: 15px;">
+            <li class="nav-item"> <a class="nav-link {% if '/add_city/' in request.path %}active{% endif %}"
+              href="{% url 'add_city' %}">Добавяне</a></li>
+          <li class="nav-item"> <a class="nav-link {% if '/manage_city/' in request.path %}active{% endif %}"
+              href="{% url 'manage_city' %}">Управление</a></li>
+          </ul>
+        </li>
+
+
+
+        <li class="nav-item">
+          <a class="nav-link d-flex align-items-center" href="#" onclick="toggleMenu('Menu14', this, true)" >
+            <span class="menu-title with-space">Улици</span> 
+            <i class="menu-arrow icon-arrow-right"></i>
+          </a>
+          <ul class="nav flex-column sub-menu" id="Menu14" style="display: none; padding-left: 15px;">
+            <li class="nav-item"> <a class="nav-link {% if '/add_street/' in request.path %}active{% endif %}"
+              href="{% url 'add_street' %}">Добавяне</a></li>
+          <li class="nav-item"> <a class="nav-link {% if '/manage_street/' in request.path %}active{% endif %}"
+              href="{% url 'manage_street' %}">Управление</a></li>
+          </ul>
+        </li>
+
+
+
+        <li class="nav-item">
+          <a class="nav-link d-flex align-items-center" href="#" onclick="toggleMenu('Menu15', this, true)">
+            <span class="menu-title with-space">Региони</span> 
+            <i class="menu-arrow icon-arrow-right"></i>
+          </a>
+          <ul class="nav flex-column sub-menu" id="Menu15" style="display: none; padding-left: 15px;">
+            <li class="nav-item"> <a class="nav-link {% if '/add_region/' in request.path %}active{% endif %}"
+              href="{% url 'add_region' %}">Добавяне</a></li>
+          <li class="nav-item"> <a class="nav-link {% if '/manage_region/' in request.path %}active{% endif %}"
+              href="{% url 'manage_region' %}">Управление</a></li>
+          </ul>
+        </li>
+
+
+
+
+            
+    <li class="nav-item">
+      <a class="nav-link d-flex align-items-center" href="#" onclick="toggleMenu('Menu199', this, false)">
+        <span class="menu-title">Сигнали</span>
+        <i class="menu-arrow icon-arrow-right"></i>
+      </a>
+      <ul class="nav flex-column sub-menu" id="Menu199" style="display: none;">
+
+          <li class="nav-item"> <a class="nav-link" href="{% url 'lodgedcomplaint' %}"> Всички сигнали </a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'newcomplaints' %}"> Необработени </a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'inprocesscomplaints' %}"> В процес </a></li>
+          <li class="nav-item"> <a class="nav-link" href="{% url 'closedcomplaints' %}"> Затворени </a></li>
+
+        </ul>
+
+    </li>
+
+
+
+      </ul>
+    </li>
+
+
+
+
+
+
+
+    <li class="nav-item">
+      <a class="nav-link d-flex align-items-center" href="#" onclick="toggleMenu('Menu2', this, false)">
+        <span class="menu-title">Профили</span>
+        <i class="menu-arrow icon-arrow-right"></i>
+      </a>
+      <ul class="nav flex-column sub-menu" id="Menu2" style="display: none;">
+
+
+        <li class="nav-item">
+          <a class="nav-link d-flex align-items-center" href="#" onclick="toggleMenu('Menu21', this, true)">
+            <span class="menu-title with-space">Профили</span> 
+            <i class="menu-arrow icon-arrow-right"></i>
+          </a>
+          <ul class="nav flex-column sub-menu" id="Menu21" style="display: none; padding-left: 15px;">
+            <li class="nav-item"> <a class="nav-link {% if '/add_user/' in request.path %}active{% endif %}"
+              href="{% url 'add_user' %}">Добавяне</a></li>
+          <li class="nav-item"> <a class="nav-link {% if '/manageusers/' in request.path %}active{% endif %}"
+              href="{% url 'manageusers' %}">Управление</a></li>
+          </ul>
+        </li>
+
+
+
+        <li class="nav-item">
+          <a class="nav-link d-flex align-items-center" href="#" onclick="toggleMenu('Menu22', this, true)">
+            <span class="menu-title with-space">ОДМВР</span> 
+            <i class="menu-arrow icon-arrow-right"></i>
+          </a>
+          <ul class="nav flex-column sub-menu" id="Menu22" style="display: none; padding-left: 15px;">
+            <li class="nav-item"> <a class="nav-link" href="{% url 'add_odmvr' %}">Добавяне</a></li>
+            <li class="nav-item"> <a class="nav-link" href="{% url 'manage_odmvr' %}">Управление</a></li>
+          </ul>
+        </li>
+
+
+        <li class="nav-item">
+          <a class="nav-link d-flex align-items-center" href="#" onclick="toggleMenu('Menu23', this, true)">
+            <span class="menu-title with-space">Длъжност</span> 
+            <i class="menu-arrow icon-arrow-right"></i>
+          </a>
+          <ul class="nav flex-column sub-menu" id="Menu23" style="display: none; padding-left: 15px;">
+            <li class="nav-item"> <a class="nav-link" href="{% url 'add_position_occupied' %}">Добавяне</a></li>
+            <li class="nav-item"> <a class="nav-link" href="{% url 'manage_position_occupied' %}">Управление</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+
+
+
+
+
+
+
+
+
+    <li class="nav-item">
+      <a class="nav-link d-flex align-items-center" href="#" onclick="toggleMenu('Menu3', this, false)">
+        <span class="menu-title">ПС</span>
+        <i class="menu-arrow icon-arrow-right"></i>
+      </a>
+      <ul class="nav flex-column sub-menu" id="Menu3" style="display: none;">
+
+
+
+        
+        <li class="nav-item">
+          <a class="nav-link d-flex align-items-center" href="#" onclick="toggleMenu('Menu31', this, true)">
+            <span class="menu-title with-space">ПС - тип</span> 
+            <i class="menu-arrow icon-arrow-right"></i>
+          </a>
+          <ul class="nav flex-column sub-menu" id="Menu31" style="display: none; padding-left: 15px;">
+            <li class="nav-item"> <a class="nav-link" href="{% url 'add_vehicle_type' %}">Добавяне</a></li>
+            <li class="nav-item"> <a class="nav-link" href="{% url 'manage_vehicle_type' %}">Управление</a></li>
+          </ul>
+        </li>
+
+
+        <li class="nav-item">
+          <a class="nav-link d-flex align-items-center" href="#" onclick="toggleMenu('Menu32', this, true)">
+            <span class="menu-title with-space">Собственици</span> 
+            <i class="menu-arrow icon-arrow-right"></i>
+          </a>
+          <ul class="nav flex-column sub-menu" id="Menu32" style="display: none; padding-left: 15px;">
+            <li class="nav-item"> <a class="nav-link" href="{% url 'add_vehicles_owner' %}">Добавяне</a></li>
+            <li class="nav-item"> <a class="nav-link" href="{% url 'manage_vehicles_owners' %}">Управление</a></li>
+          </ul>
+        </li>
+
+
+
+        <li class="nav-item">
+          <a class="nav-link d-flex align-items-center" href="#" onclick="toggleMenu('Menu33', this, true)">
+            <span class="menu-title with-space">Свидетелства</span> 
+            <i class="menu-arrow icon-arrow-right"></i>
+          </a>
+          <ul class="nav flex-column sub-menu" id="Menu33" style="display: none; padding-left: 15px;">
+            <li class="nav-item"> <a class="nav-link" href="{% url 'add_vehicles_license' %}">Добавяне</a></li>
+            <li class="nav-item"> <a class="nav-link" href="{% url 'manage_vehicles_licenses' %}">Управление</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link d-flex align-items-center" href="#" onclick="toggleMenu('Menu34', this, true)">
+            <span class="menu-title with-space">Винетки</span>
+            <i class="menu-arrow icon-arrow-right"></i>
+          </a>
+          <ul class="nav flex-column sub-menu" id="Menu34" style="display: none; padding-left: 15px;">
+            <li class="nav-item"> <a class="nav-link" href="{% url 'add_vignette' %}">Добавяне</a></li>
+            <li class="nav-item"> <a class="nav-link" href="{% url 'manage_vignettes' %}">Управление</a></li>
+          </ul>
+        </li>
+
+
+        <li class="nav-item">
+          <a class="nav-link d-flex align-items-center" href="#" onclick="toggleMenu('Menu35', this, true)">
+            <span class="menu-title with-space">Застраховки</span>
+            <i class="menu-arrow icon-arrow-right"></i>
+          </a>
+          <ul class="nav flex-column sub-menu" id="Menu35" style="display: none; padding-left: 15px;">
+            <li class="nav-item"> <a class="nav-link" href="{% url 'add_insurance' %}">Добавяне</a></li>
+            <li class="nav-item"> <a class="nav-link" href="{% url 'manage_insurances' %}">Управление</a></li>
+          </ul>
+        </li>
+
+
+        <li class="nav-item">
+          <a class="nav-link d-flex align-items-center" href="#" onclick="toggleMenu('Menu36', this, true)">
+            <span class="menu-title with-space">Фишове|Актове</span>
+            <i class="menu-arrow icon-arrow-right"></i>
+          </a>
+          <ul class="nav flex-column sub-menu" id="Menu36" style="display: none; padding-left: 15px;">
+            <li class="nav-item"> <a class="nav-link" href="{% url 'add_traffic_fine' %}">Добавяне</a></li>
+            <li class="nav-item"> <a class="nav-link" href="{% url 'manage_traffic_fines' %}">Управление</a></li>
+          </ul>
+        </li>
+
+
+        <li class="nav-item">
+          <a class="nav-link d-flex align-items-center" href="#" onclick="toggleMenu('Menu341', this, true)">
+            <span class="menu-title with-space">ПС</span>
+            <i class="menu-arrow icon-arrow-right"></i>
+          </a>
+          <ul class="nav flex-column sub-menu" id="Menu341" style="display: none; padding-left: 15px;">
+            <li class="nav-item"> <a class="nav-link" href="{% url 'add_vehicle' %}">Добавяне</a></li>
+            <li class="nav-item"> <a class="nav-link" href="{% url 'manage_vehicles' %}">Управление</a></li>
+          </ul>
+        </li>
+
+
+
+
+      </ul>
+    </li>
+
+
+
+
+
+
+    <li class="nav-item">
+      <a class="nav-link d-flex align-items-center" href="#" onclick="toggleMenu('Menu4', this, false)">
+        <span class="menu-title">Светофари</span>
+        <i class="menu-arrow icon-arrow-right"></i>
+      </a>
+      <ul class="nav flex-column sub-menu" id="Menu4" style="display: none;">
+
+
+
+        
+        <li class="nav-item">
+          <a class="nav-link d-flex align-items-center" href="#" onclick="toggleMenu('Menu41', this, true)">
+            <span class="menu-title with-space">Светофари - тип</span> 
+            <i class="menu-arrow icon-arrow-right"></i>
+          </a>
+          <ul class="nav flex-column sub-menu" id="Menu41" style="display: none; padding-left: 15px;">
+            <li class="nav-item"> <a class="nav-link" href="{% url 'add_type_traffic_lights' %}">Добавяне</a></li>
+            <li class="nav-item"> <a class="nav-link" href="{% url 'manage_type_traffic_lights' %}">Управление</a></li>
+          </ul>
+        </li>
+
+
+        <li class="nav-item">
+          <a class="nav-link d-flex align-items-center" href="#" onclick="toggleMenu('Menu42', this, true)">
+            <span class="menu-title with-space">Светофари</span> 
+            <i class="menu-arrow icon-arrow-right"></i>
+          </a>
+          <ul class="nav flex-column sub-menu" id="Menu42" style="display: none; padding-left: 15px;">
+            <li class="nav-item"> <a class="nav-link" href="{% url 'add_traffic_lights' %}">Добавяне</a></li>
+            <li class="nav-item"> <a class="nav-link" href="{% url 'manage_traffic_lights' %}">Управление</a></li>
+          </ul>
+        </li>
+
+      </ul>
+    </li>
+
+
+
+
+
+
+
+
+    <li class="nav-item">
+      <a class="nav-link d-flex align-items-center" href="#" onclick="toggleMenu('Menu5', this, false)">
+        <span class="menu-title">Анализи</span>
+        <i class="menu-arrow icon-arrow-right"></i>
+      </a>
+      <ul class="nav flex-column sub-menu" id="Menu5" style="display: none;">
+
+
+
+        
+        <li class="nav-item">
+          <a class="nav-link d-flex align-items-center" href="#" onclick="toggleMenu('Menu51', this, true)">
+            <span class="menu-title with-space">Аналииз</span> 
+            <i class="menu-arrow icon-arrow-right"></i>
+          </a>
+          <ul class="nav flex-column sub-menu" id="Menu51" style="display: none; padding-left: 15px;">
+            <li class="nav-item"> <a class="nav-link" href="{% url 'geographic_analysis' %}"> Георграфски</a></li>
+            <li class="nav-item"> <a class="nav-link" href="{% url 'complaintsreports' %}"> Сигнали</a></li>
+            <li class="nav-item"> <a class="nav-link" href="{% url 'userbdreports' %}"> Нови потребители</a></li>
+          </ul>
+        </li>
+
+
+        <li class="nav-item">
+          <a class="nav-link d-flex align-items-center" href="#" onclick="toggleMenu('Menu52', this, true)">
+            <span class="menu-title with-space">Търсачка</span> 
+            <i class="menu-arrow icon-arrow-right"></i>
+          </a>
+          <ul class="nav flex-column sub-menu" id="Menu52" style="display: none; padding-left: 15px;">
+            <li class="nav-item"> <a class="nav-link" href="{% url 'searchusers' %}"> User Search </a></li>
+            <li class="nav-item"> <a class="nav-link" href="{% url 'searchcomplaints' %}"> Complaints Search </a></li>
+          </ul>
+        </li>
+
+      </ul>
+    </li>
+
+
+
+
+
+
+
+    
+
+
+    <li class="nav-item">
+      <a class="nav-link d-flex align-items-center" href="#" onclick="toggleMenu('Menu7', this, false)">
+        <span class="menu-title">Поддръжка</span>
+        <i class="menu-arrow icon-arrow-right"></i>
+      </a>
+      <ul class="nav flex-column sub-menu" id="Menu7" style="display: none;">
+
+
+        
+        
+        <li class="nav-item">
+          <a class="nav-link d-flex align-items-center" href="#" onclick="toggleMenu('Menu71', this, true)">
+            <span class="menu-title with-space">База данни</span> 
+            <i class="menu-arrow icon-arrow-right"></i>
+          </a>
+          <ul class="nav flex-column sub-menu" id="Menu71" style="display: none; padding-left: 15px;">
+            <li class="nav-item"> <a class="nav-link" href="{% url 'generate_er_diagram' %}"> ER Диаграма</a></li>
+            <li class="nav-item"> <a class="nav-link" href="{% url 'backup_database' %}"> Архивиране</a></li>
+          </ul>
+        </li>
+
+
+
+      </ul>
+    </li>
+
+
+
+
+
+
+
+
+
+  </ul>
+</nav>
+
+
+
+
+{% elif request.user.user_type == "2" %}
+<nav class="sidebar sidebar-offcanvas" id="sidebar">
+  <ul class="nav">
+    <li class="nav-item nav-profile">
+      <a class="nav-link" href="{% url 'user_home' %}">
+        <div class="profile-image">
+
+
+          {% if request.user.profile_pic %}
+          <img class="img-xs rounded-circle" src="/{{ request.user.profile_pic }}" alt="profile image">
+          {% else %}
+          <img class="img-xs rounded-circle" src="/static/images/default_profile.png" alt="profile image">
+          {% endif %}
+
+
+
+          <div class="dot-indicator bg-success"></div>
+        </div>
+        <div class="text-wrapper">
+          <p class="profile-name">{{user.first_name}} {{user.last_name}}</p>
+          <p class="designation">Потребител</p>
+        </div>
+
+      </a>
+    </li>
+    <li class="nav-item nav-category">
+      <span class="nav-link">Smart Traffic Control</span>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'user_home' %}">
+        <span class="menu-title">Начало</span>
+        <i class="icon-screen-desktop menu-icon"></i>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'regcomplaint' %}">
+        <span class="menu-title">Изпрати сигнал</span>
+        <i class="icon-book-open menu-icon"></i>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'complainthistory' %}">
+        <span class="menu-title">Изпратени сигнали</span>
+        <i class="icon-chart menu-icon"></i>
+      </a>
+    </li>
+
+
+
+  </ul>
+</nav>
+
+
+
+
+
+
+{% else %}
+<nav class="sidebar sidebar-offcanvas" id="sidebar">
+  <ul class="nav">
+    <li class="nav-item nav-profile">
+      <a class="nav-link" href="{% url 'user_home' %}">
+        <div class="profile-image">
+
+
+          {% if request.user.profile_pic %}
+          <img class="img-xs rounded-circle" src="/{{ request.user.profile_pic }}" alt="profile image">
+          {% else %}
+          <img class="img-xs rounded-circle" src="/static/images/default_profile.png" alt="profile image">
+          {% endif %}
+
+
+
+          <div class="dot-indicator bg-success"></div>
+        </div>
+        <div class="text-wrapper">
+          <p class="profile-name">{{user.first_name}} {{user.last_name}}</p>
+          <p class="designation">Полицай</p>
+        </div>
+
+      </a>
+    </li>
+    <li class="nav-item nav-category">
+      <span class="nav-link">Smart Traffic Control</span>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'user_home' %}">
+        <span class="menu-title">Начало</span>
+        <i class="icon-screen-desktop menu-icon"></i>
+      </a>
+    </li>
+
+
+
+
+  </ul>
+</nav>
+
+{% endif %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+
+  /* Разстояние между текста и стрелката */
+  .menu-title.with-space {
+    padding-right: 20px; /* Промени на 25px или повече, ако искаш още разстояние */
+  }
+
+  /* Завъртане на стрелката при отворено подменю */
+  .rotate {
+    transform: rotate(90deg);
+  }
+
+  /* Подменютата ще изглеждат добре подравнени */
+  .sidebar .nav .nav-item .nav-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  /* Скриване на подменютата по подразбиране */
+  .sub-menu {
+    display: none;
+  }
+
+
+  /* Оформяне на стрелките */
+.menu-arrow {
+    position: absolute;
+    right: 15px; /* Регулирай разстоянието, ако е необходимо */
+    transition: transform 0.3s ease;
+    font-size: 12px;
+}
+
+/* Подравняване на линковете в менюто */
+.nav-item {
+    position: relative;
+}
+
+/* Гарантира, че текстът и стрелката са добре подравнени */
+.nav-item .nav-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    padding-right: 30px; /* Оставя място за стрелката */
+}
+
+</style>
+
+<script>
+  function toggleMenu(id, element, isSubmenu = true) {
+    var menu = document.getElementById(id);
+    var parentMenu = element.closest(".sub-menu") || document.getElementById("sidebar");
+    var allSubmenus = parentMenu.querySelectorAll(".sub-menu");
+
+    // Ако текущото меню вече е отворено, затваряме го
+    if (menu.style.display === "block") {
+      menu.style.display = "none";
+      element.querySelector(".menu-arrow").classList.remove("rotate");
+      return;
+    }
+
+    // Затваряне на всички други подменюта в рамките на същото главно меню
+    allSubmenus.forEach(function(submenu) {
+      if (submenu.id !== id) {
+        submenu.style.display = "none";
+        var arrow = document.querySelector("[onclick*='" + submenu.id + "'] .menu-arrow");
+        if (arrow) {
+          arrow.classList.remove("rotate");
+        }
+      }
+    });
+
+    // Отваряне на новото подменю
+    menu.style.display = "block";
+    element.querySelector(".menu-arrow").classList.add("rotate");
+  }
+</script>

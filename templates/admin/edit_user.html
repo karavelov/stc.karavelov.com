@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% if request.user.is_superuser %}
+
+<div class="row">
+  <div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Редактиране на профил</h4>
+        {% include 'includes/messages.html' %}
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <table class="table table-bordered">
+            <tbody>
+              <tr>
+                <td><b>Име</b></td>
+                <td><input type="text" name="first_name" class="form-control" value="{{ user.admin.first_name }}" required></td>
+              </tr>
+              <tr>
+                <td><b>Фамилия</b></td>
+                <td><input type="text" name="last_name" class="form-control" value="{{ user.admin.last_name }}" required></td>
+              </tr>
+              <tr>
+                <td><b>Тип на потребителя</b></td>
+                <td>
+                  <select name="user_type" class="form-control" id="user_type_select">
+                    <option value="1" {% if user.admin.user_type == 1 %}selected{% endif %}>Администратор</option>
+                    <option value="2" {% if user.admin.user_type == 2 %}selected{% endif %}>Потребител</option>
+                    <option value="3" {% if user.admin.user_type == 3 %}selected{% endif %}>Полицай</option>
+                  </select>
+                </td>
+              </tr>
+
+              <!-- Полето за регион, което се показва само ако потребителят е полицай -->
+              <tr id="region_row" {% if user.admin.user_type != 3 %}style="display: none;"{% endif %}>
+                <td><b>Район</b></td>
+                <td>
+                  <select name="region" class="form-control">
+                    <option value="">Изберете район</option>
+                    {% for region in regions %}
+                      <option value="{{ region.id }}" {% if user.region and user.region.id == region.id %}selected{% endif %}>
+                        {{ region.regionname }}
+                      </option>
+                    {% endfor %}
+                  </select>
+                </td>
+              </tr>
+
+              <tr>
+                <td><b>Email</b></td>
+                <td><input type="email" name="email" class="form-control" value="{{ user.admin.email }}" required></td>
+              </tr>
+              <tr>
+                <td><b>Профилна снимка</b></td>
+                <td>
+                  {% if user.admin.profile_pic %}
+                    <img src="/{{ user.admin.profile_pic }}" alt="Profile Picture" class="img-thumbnail" style="max-width: 150px;">
+                  {% else %}
+                    <p>Няма качена снимка</p>
+                  {% endif %}
+                  <input type="file" name="profile_pic" class="form-control mt-2">
+                </td>
+              </tr>
+              <tr>
+                <td><b>Телефонен номер</b></td>
+                <td><input type="text" name="mobilenumber" class="form-control" value="{{ user.mobilenumber }}" required></td>
+              </tr>
+              <tr>
+                <td><b>Нова парола</b></td>
+                <td><input type="password" name="password" class="form-control" placeholder="Въведете нова парола (оставете празно, ако не желаете промяна)"></td>
+              </tr>
+              <tr>
+                <td><b>Дата на регистрация</b></td>
+                <td>{{ user.regdate_at|date:"d.m.Y H:i" }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="text-center mt-4">
+            <button type="submit" class="btn btn-success">Запази</button>
+            <a href="{% url 'manageusers' %}" class="btn btn-secondary">Отказ</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ✅ JavaScript за динамично показване/скриване на полето за регион -->
+<script>
+  function toggleRegionField() {
+    var userType = document.getElementById("user_type_select").value;
+    var regionRow = document.getElementById("region_row");
+    if (userType == "3") {
+        regionRow.style.display = "table-row";
+    } else {
+        regionRow.style.display = "none";
+    }
+  }
+  
+  document.getElementById("user_type_select").addEventListener("change", toggleRegionField);
+  window.onload = toggleRegionField;
+</script>
+
+{% else %}
+<div class="alert alert-danger" role="alert">
+  <h4 class="alert-heading">Достъп отказан!</h4>
+  <p>Тази страница е достъпна само за администратори.</p>
+</div>
+{% endif %}
+
+{% endblock %}

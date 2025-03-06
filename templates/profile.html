@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="row">
+    <div class="col-md-6 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Детайли на профила</h4>
+         <hr>
+          <form class="forms-sample" method="POST" action="{% url 'profile_update' %}" enctype="multipart/form-data">
+            {% include 'includes/messages.html' %}
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="profile_pic">Профилна снимка</label>
+              <input type="file" class="form-control" name="profile_pic">
+            </div>
+            <div class="form-group">
+              <label for="first_name">Име</label>
+              <input type="text" class="form-control" name="first_name" value="{{ user.first_name }}">
+            </div>
+            <div class="form-group">
+              <label for="last_name">Фамилия</label>
+              <input type="text" class="form-control" name="last_name" value="{{ user.last_name }}">
+            </div>
+            <div class="form-group">
+              <label for="email">Имейл</label>
+              <input type="email" class="form-control" readonly name="email" value="{{ user.email }}">
+            </div>
+            <div class="form-group">
+                <label for="username">Потребителско име</label>
+                <input type="text" class="form-control" readonly name="username" value="{{ user.username }}">
+            </div>
+           
+            <button type="submit" class="btn btn-primary mr-2">Обнови</button>
+            
+          </form>
+        </div>
+      </div>
+    </div>
+</div>
+
+{% endblock %}

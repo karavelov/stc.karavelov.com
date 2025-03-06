@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if request.user.is_superuser %}
+
+<div class="row">
+    <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Редактиране на вид превозно средство</h4>
+
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="vehicle_type_name">Вид превозно средство</label>
+                        <input type="text" class="form-control" id="vehicle_type_name" name="vehicle_type_name"
+                               value="{{ vehicle_type.vehicle_type_name }}" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Запази</button>
+                    <a href="{% url 'manage_vehicle_type' %}" class="btn btn-secondary">Отказ</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% else %}
+<div class="alert alert-danger" role="alert">
+    <h4 class="alert-heading">Достъп отказан!</h4>
+    <p>Тази страница е достъпна само за администратори.</p>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,409 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+  <head>
+    
+    <title>Smart Traffic Control</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="/static/assets/vendors/simple-line-icons/css/simple-line-icons.css">
+    <link rel="stylesheet" href="/static/assets/vendors/flag-icon-css/css/flag-icon.min.css">
+    <link rel="stylesheet" href="/static/assets/vendors/css/vendor.bundle.base.css">
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <link rel="stylesheet" href="/static/assets/vendors/daterangepicker/daterangepicker.css">
+    <link rel="stylesheet" href="/static/assets/vendors/chartist/chartist.min.css">
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <!-- endinject -->
+    <!-- Layout styles -->
+    <link rel="stylesheet" href="/static/assets/css/style.css">
+    <!-- End layout styles -->
+
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <link rel="stylesheet" href="/static/css/custom.css">
+    <script src="/static/js/custom.js"></script>
+    
+  </head>
+  <body>
+    <div class="container-scroller">
+      <!-- partial:partials/_navbar.html -->
+      
+
+<nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+  
+  <div class="navbar-brand-wrapper d-flex align-items-center">
+    <a class="navbar-brand brand-logo" href="/Admin/AdminHome">
+      <p style="color: aliceblue;font-size: medium;font-weight: bolder;">Smart Traffic Control</p>
+    </a>
+    <a class="navbar-brand brand-logo-mini" href="/Admin/AdminHome"><img
+        src="/static/assets/images/logo-mini.svg" alt="logo" /></a>
+  </div>
+  
+
+  <div class="navbar-menu-wrapper d-flex align-items-center flex-grow-1">
+    <h5 class="mb-0 font-weight-medium d-none d-lg-flex">Добре дошли, Smart Traffic
+      Control</h5>
+    <ul class="navbar-nav navbar-nav-right ml-auto">
+
+
+
+
+      <li class="nav-item dropdown d-none d-xl-inline-flex user-dropdown">
+        <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
+
+          
+          <img class="img-xs rounded-circle ml-2" src="/media/profile_pic/256x256bb.jpg" alt="profile image">
+          
+
+
+
+
+          <span class="font-weight-normal"> Smart Traffic Control</span></a>
+        <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
+          <div class="dropdown-header text-center">
+
+
+            
+            <img class="img-md rounded-circle" src="/media/profile_pic/256x256bb.jpg" style='width:80px'
+              alt="Profile image">
+            
+
+
+            <p class="mb-1 mt-3">Smart Traffic Control</p>
+            <p class="font-weight-light text-muted mb-0">stc@karavelov.com</p>
+          </div>
+          <a class="dropdown-item" href="/user/profile"><i class="dropdown-item-icon icon-user text-primary"></i>
+            Профил</a>
+          <a class="dropdown-item" href="/user/password"><i
+              class="dropdown-item-icon icon-speech text-primary"></i> Промени парола</a>
+
+          <a class="dropdown-item" href="/doLogout"><i
+              class="dropdown-item-icon icon-power text-primary"></i>Изход</a>
+        </div>
+      </li>
+    </ul>
+    <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
+      data-toggle="offcanvas">
+      <span class="icon-menu"></span>
+    </button>
+  </div>
+</nav>
+      
+      <!-- partial -->
+      <div class="container-fluid page-body-wrapper">
+        <!-- partial:partials/_sidebar.html -->
+        
+
+<nav class="sidebar sidebar-offcanvas" id="sidebar">
+  <ul class="nav">
+    <li class="nav-item nav-profile">
+      <a class="nav-link" href="/Admin/AdminHome">
+        <div class="profile-image">
+          
+          <img class="img-xs rounded-circle" src="/media/profile_pic/256x256bb.jpg" alt="profile image">
+          
+          <div class="dot-indicator bg-success"></div>
+        </div>
+        <div class="text-wrapper">
+          <p class="profile-name">Smart Traffic Control</p>
+          <p class="designation">Администратор</p>
+        </div>
+      </a>
+    </li>
+    <li class="nav-item nav-category">
+      <span class="nav-link">Smart Traffic Control</span>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" href="/Admin/AdminHome">
+        <span class="menu-title">Начало</span>
+        <i class="icon-screen-desktop menu-icon"></i>
+      </a>
+    </li>
+
+    <!-- Дървовидно меню с JS -->
+    <li class="nav-item">
+      <a class="nav-link" href="#" onclick="toggleMenu('categoriesMenu')">
+        <span class="menu-title">Категории</span>
+        <i class="icon-doc menu-icon"></i>
+      </a>
+      <ul class="nav flex-column sub-menu" id="categoriesMenu" style="display: none;">
+        <li class="nav-item">
+          <a class="nav-link" href="/AddCategory">Добавяне</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/ManageCategory">Управление</a>
+        </li>
+        <li class="nav-item has-submenu">
+          <a class="nav-link" href="#" onclick="toggleMenu('subCategoriesMenu')">
+            <span class="menu-title">Подкатегории</span>
+          </a>
+          <ul class="nav flex-column sub-menu" id="subCategoriesMenu" style="display: none; padding-left: 15px;">
+            <li class="nav-item">
+              <a class="nav-link" href="/AddSubcategory">Добавяне</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/ManageSubcategory">Управление</a>
+            </li>
+            <li class="nav-item has-submenu">
+              <a class="nav-link" href="#" onclick="toggleMenu('subSubCategoriesMenu')">
+                <span class="menu-title">Под управление</span>
+              </a>
+              <ul class="nav flex-column sub-menu" id="subSubCategoriesMenu" style="display: none; padding-left: 30px;">
+                <li class="nav-item">
+                  <a class="nav-link" href="/AddSubcategory">Добавяне</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/ManageSubcategory">Управление</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" href="/ManageVehicles">
+        <span class="menu-title">Превозни средства</span>
+        <i class="icon-car menu-icon"></i>
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<script>
+  function toggleMenu(id) {
+    var element = document.getElementById(id);
+    if (element.style.display === "none") {
+      element.style.display = "block";
+    } else {
+      element.style.display = "none";
+    }
+  }
+</script>
+
+<style>
+  /* Добавяне на икона за подменю */
+  .sidebar .nav .nav-item.has-submenu > a::before {
+    content: "\f07b"; /* FontAwesome икона на папка */
+    font-family: "FontAwesome";
+    font-size: 16px;
+    margin-right: 10px;
+    color: #ffc107; /* Жълтеникава икона */
+  }
+
+  /* Увери се, че подменютата са подравнени добре */
+  .sidebar .nav.sub-menu .nav-item .nav-link {
+    padding-left: 30px;
+  }
+</style>
+
+
+        <!-- partial -->
+        <div class="main-panel">
+          <div class="content-wrapper">
+          
+            
+            
+            
+
+
+<div class="row">
+    <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Управление на превозни средства</h4>
+
+                <form method="get">
+                    <input type="text" name="query" class="form-control" placeholder="Търсене по регистрационен номер">
+                    <button type="submit" class="btn btn-dark">Търсене</button>
+                </form>
+
+                <br />
+                
+   
+
+
+
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Рег. номер</th>
+                            <th>Тип</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                        <tr>
+                            <td>1</td>
+                            <td>PA 6874 BT</td>
+                            <td></td>
+                            <td>
+                                <a href="/UpdateVehicle/1" class="btn btn-success btn-sm">Редактиране</a>
+                                <a href="#" data-href="/DeleteVehicle/1" class="btn btn-danger btn-sm delete-btn">Изтриване</a>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td>2</td>
+                            <td>CB 8741 DT</td>
+                            <td></td>
+                            <td>
+                                <a href="/UpdateVehicle/2" class="btn btn-success btn-sm">Редактиране</a>
+                                <a href="#" data-href="/DeleteVehicle/2" class="btn btn-danger btn-sm delete-btn">Изтриване</a>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td>3</td>
+                            <td>PB 1458 CT</td>
+                            <td></td>
+                            <td>
+                                <a href="/UpdateVehicle/3" class="btn btn-success btn-sm">Редактиране</a>
+                                <a href="#" data-href="/DeleteVehicle/3" class="btn btn-danger btn-sm delete-btn">Изтриване</a>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td>4</td>
+                            <td>CC 1231 AT</td>
+                            <td></td>
+                            <td>
+                                <a href="/UpdateVehicle/4" class="btn btn-success btn-sm">Редактиране</a>
+                                <a href="#" data-href="/DeleteVehicle/4" class="btn btn-danger btn-sm delete-btn">Изтриване</a>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td>5</td>
+                            <td>PK 2886 CT</td>
+                            <td></td>
+                            <td>
+                                <a href="/UpdateVehicle/5" class="btn btn-success btn-sm">Редактиране</a>
+                                <a href="#" data-href="/DeleteVehicle/5" class="btn btn-danger btn-sm delete-btn">Изтриване</a>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td>6</td>
+                            <td>TX 8374 DT</td>
+                            <td></td>
+                            <td>
+                                <a href="/UpdateVehicle/6" class="btn btn-success btn-sm">Редактиране</a>
+                                <a href="#" data-href="/DeleteVehicle/6" class="btn btn-danger btn-sm delete-btn">Изтриване</a>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td>7</td>
+                            <td>PB 1687 CT</td>
+                            <td></td>
+                            <td>
+                                <a href="/UpdateVehicle/7" class="btn btn-success btn-sm">Редактиране</a>
+                                <a href="#" data-href="/DeleteVehicle/7" class="btn btn-danger btn-sm delete-btn">Изтриване</a>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td>8</td>
+                            <td>EB 4092 CT</td>
+                            <td></td>
+                            <td>
+                                <a href="/UpdateVehicle/8" class="btn btn-success btn-sm">Редактиране</a>
+                                <a href="#" data-href="/DeleteVehicle/8" class="btn btn-danger btn-sm delete-btn">Изтриване</a>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td>9</td>
+                            <td>KH 1362 AT</td>
+                            <td></td>
+                            <td>
+                                <a href="/UpdateVehicle/9" class="btn btn-success btn-sm">Редактиране</a>
+                                <a href="#" data-href="/DeleteVehicle/9" class="btn btn-danger btn-sm delete-btn">Изтриване</a>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td>10</td>
+                            <td>BT 6441 BT</td>
+                            <td></td>
+                            <td>
+                                <a href="/UpdateVehicle/10" class="btn btn-success btn-sm">Редактиране</a>
+                                <a href="#" data-href="/DeleteVehicle/10" class="btn btn-danger btn-sm delete-btn">Изтриване</a>
+                            </td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+
+                <script>
+                    document.querySelectorAll('.delete-btn').forEach(function (button) {
+                        button.addEventListener('click', function (event) {
+                            event.preventDefault();
+                            const deleteUrl = this.getAttribute('data-href');
+                            Swal.fire({
+                                title: 'Сигурни ли сте?',
+                                text: 'Това действие не може да бъде отменено!',
+                                icon: 'warning',
+                                showCancelButton: true,
+                                confirmButtonText: 'Да, изтрий!',
+                                cancelButtonText: 'Отказ'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = deleteUrl;
+                                }
+                            });
+                        });
+                    });
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+          
+           
+          </div>
+          <!-- content-wrapper ends -->
+          <!-- partial:partials/_footer.html -->
+          
+<footer class="footer">
+    <div class="d-sm-flex justify-content-center justify-content-sm-between">
+      <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Smart Traffic Control </span>
+     <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> NOIT 2024/2025</span>
+    </div>
+  </footer>
+          <!-- partial -->
+        </div>
+        <!-- main-panel ends -->
+      </div>
+      <!-- page-body-wrapper ends -->
+    </div>
+    <!-- container-scroller -->
+    <!-- plugins:js -->
+    <script src="/static/assets/vendors/js/vendor.bundle.base.js"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page -->
+    <script src="/static/assets/vendors/chart.js/Chart.min.js"></script>
+    <script src="/static/assets/vendors/moment/moment.min.js"></script>
+    <script src="/static/assets/vendors/daterangepicker/daterangepicker.js"></script>
+    <script src="/static/assets/vendors/chartist/chartist.min.js"></script>
+    <!-- End plugin js for this page -->
+    <!-- inject:js -->
+    <script src="/static/assets/js/off-canvas.js"></script>
+    <script src="/static/assets/js/misc.js"></script>
+    <!-- endinject -->
+    <!-- Custom js for this page -->
+    <script src="/static/assets/js/dashboard.js"></script>
+    <!-- End custom js for this page -->
+  </body>
+</html>

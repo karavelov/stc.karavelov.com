@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Редактиране на позиция</h4>
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label>Име на позиция</label>
+                        <input type="text" class="form-control" name="position_occupied_name" value="{{ position_occupied.position_occupied_name }}" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Запази</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

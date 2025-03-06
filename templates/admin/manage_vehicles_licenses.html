@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% if request.user.is_superuser %}
+
+<div class="row">
+    <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Управление на свидетелства за управление</h4>
+
+                <form method="get" class="d-flex align-items-center w-100">
+                    <div class="form-group mb-0 mr-2" style="flex: 1; position: relative;">
+                        <input type="text" id="query" name="query" class="form-control"
+                            placeholder="Търсене по N на документа" value="{{ query }}" autocomplete="off">
+                        <div id="suggestions" class="list-group"
+                            style="position: absolute; z-index: 1000; width: 100%; display: none;"></div>
+                    </div>
+                    <button type="submit" class="btn btn-dark mr-2">Филтриране</button>
+                    <a href="{% url 'manage_vehicles_licenses' %}" class="btn btn-secondary">Нулиране</a>
+                </form>
+
+                <br />
+                {% include 'includes/messages.html' %}
+
+                <div class="table-responsive">
+                    {% if licenses %}
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>N на документа</th>
+                                <th>Дата на издаване</th>
+                                <th>Валидност</th>
+                                <th>Издаден от</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for license in licenses %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ license.document_number }}</td>
+                                <td>{{ license.date_of_issue|date:"d.m.Y" }}</td>
+                                <td>{{ license.date_of_expiry|date:"d.m.Y" }}</td>
+                                <td>{{ license.authority }}</td>
+                                <td>
+                                    <a href="{% url 'update_vehicles_license' license.id %}" class="btn btn-success btn-sm">Редактиране</a>
+                                    <a href="#" data-href="{% url 'delete_vehicles_license' license.id %}" 
+                                       class="btn btn-danger btn-sm delete-btn">Изтриване</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                    <div class="pagination d-flex justify-content-between">
+                        <span class="text-muted">Общо резултати: {{ licenses.paginator.count }}</span>
+
+                        <div>
+                            {% if licenses.has_previous %}
+                            <a href="?page={{ licenses.previous_page_number }}" class="btn btn-secondary">⟵</a>
+                            {% endif %}
+
+                            <span class="btn disabled">
+                                Страница {{ licenses.number }} от {{ licenses.paginator.num_pages }}
+                            </span>
+
+                            {% if licenses.has_next %}
+                            <a href="?page={{ licenses.next_page_number }}" class="btn btn-secondary">⟶</a>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    {% else %}
+                    <p class="text-center font-weight-bold">Няма записи!</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.querySelectorAll('.delete-btn').forEach(function (button) {
+        button.addEventListener('click', function (event) {
+            event.preventDefault();
+            const deleteUrl = this.getAttribute('data-href');
+            Swal.fire({
+                title: 'Сигурни ли сте?',
+                text: 'Това действие не може да бъде отменено!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Да, изтрий!',
+                cancelButtonText: 'Отказ'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = deleteUrl;
+                }
+            });
+        });
+    });
+</script>
+
+{% else %}
+<div class="alert alert-danger">
+    <h4>Достъп отказан!</h4>
+    <p>Тази страница е достъпна само за администратори.</p>
+</div>
+{% endif %}
+{% endblock %}

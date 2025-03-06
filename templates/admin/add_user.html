@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% if request.user.is_superuser %} <!-- Проверка дали потребителят е администратор -->
+
+<div class="row">
+    <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Добавяне на профил</h4>
+                {% include 'includes/messages.html' %}
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <td><b>Име</b></td>
+                                <td><input type="text" name="first_name" class="form-control" required></td>
+                            </tr>
+                            <tr>
+                                <td><b>Фамилия</b></td>
+                                <td><input type="text" name="last_name" class="form-control" required></td>
+                            </tr>
+                            <tr>
+                                <td><b>Email</b></td>
+                                <td><input type="email" name="email" class="form-control" required></td>
+                            </tr>
+                            <tr>
+                                <td><b>Тип на потребителя</b></td>
+                                <td>
+                                    <select name="user_type" class="form-control">
+                                        <option value="1">Администратор</option>
+                                        <option value="2">Потребител</option>
+                                        <option value="3">Полицай</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>Парола</b></td>
+                                <td><input type="password" name="password" class="form-control" required></td>
+                            </tr>
+                            <tr>
+                                <td><b>Профилна снимка</b></td>
+                                <td><input type="file" name="profile_pic" class="form-control"></td>
+                            </tr>
+                            <tr>
+                                <td><b>Телефонен номер</b></td>
+                                <td><input type="text" name="mobilenumber" class="form-control" required></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-success">Запази</button>
+                        <a href="{% url 'manageusers' %}" class="btn btn-secondary">Отказ</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="alert alert-danger" role="alert">
+    <h4 class="alert-heading">Достъп отказан!</h4>
+    <p>Тази страница е достъпна само за администратори.</p>
+</div>
+{% endif %}
+{% endblock %}

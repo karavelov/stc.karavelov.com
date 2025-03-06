@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if request.user.is_superuser %}
+
+<div class="row">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Редактиране на свидетелство</h4>
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <div class="form-group">
+                        <label>N на документа</label>
+                        <input type="text" name="document_number" class="form-control" value="{{ license.document_number }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Дата на издаване</label>
+                        <input type="date" name="date_of_issue" class="form-control" value="{{ license.date_of_issue|date:'Y-m-d' }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Валидност</label>
+                        <input type="date" name="date_of_expiry" class="form-control" value="{{ license.date_of_expiry|date:'Y-m-d' }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Издаден от</label>
+                        <input type="text" name="authority" class="form-control" value="{{ license.authority }}" required>
+                    </div>
+
+                    <hr>
+                    <h5>Категории</h5>
+
+                    <div class="form-row">
+                        <div class="col-md-4 form-group">
+                            <label>AM</label>
+                            <input type="date" name="AM_DATE" class="form-control" value="{{ license.AM_DATE|date:'Y-m-d' }}">
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label>B1</label>
+                            <input type="date" name="B1_DATE" class="form-control" value="{{ license.B1_DATE|date:'Y-m-d' }}">
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label>B</label>
+                            <input type="date" name="B_DATE" class="form-control" value="{{ license.B_DATE|date:'Y-m-d' }}">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col-md-4 form-group">
+                            <label>A1</label>
+                            <input type="date" name="A1_DATE" class="form-control" value="{{ license.A1_DATE|date:'Y-m-d' }}">
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label>A2</label>
+                            <input type="date" name="A2_DATE" class="form-control" value="{{ license.A2_DATE|date:'Y-m-d' }}">
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label>A</label>
+                            <input type="date" name="A_DATE" class="form-control" value="{{ license.A_DATE|date:'Y-m-d' }}">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col-md-4 form-group">
+                            <label>C1</label>
+                            <input type="date" name="C1_DATE" class="form-control" value="{{ license.C1_DATE|date:'Y-m-d' }}">
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label>C</label>
+                            <input type="date" name="C_DATE" class="form-control" value="{{ license.C_DATE|date:'Y-m-d' }}">
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label>D1</label>
+                            <input type="date" name="D1_DATE" class="form-control" value="{{ license.D1_DATE|date:'Y-m-d' }}">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col-md-4 form-group">
+                            <label>D</label>
+                            <input type="date" name="D_DATE" class="form-control" value="{{ license.D_DATE|date:'Y-m-d' }}">
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label>BE</label>
+                            <input type="date" name="BE_DATE" class="form-control" value="{{ license.BE_DATE|date:'Y-m-d' }}">
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label>C1E</label>
+                            <input type="date" name="C1E_DATE" class="form-control" value="{{ license.C1E_DATE|date:'Y-m-d' }}">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col-md-4 form-group">
+                            <label>CE</label>
+                            <input type="date" name="CE_DATE" class="form-control" value="{{ license.CE_DATE|date:'Y-m-d' }}">
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label>D1E</label>
+                            <input type="date" name="D1E_DATE" class="form-control" value="{{ license.D1E_DATE|date:'Y-m-d' }}">
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label>DE</label>
+                            <input type="date" name="DE_DATE" class="form-control" value="{{ license.DE_DATE|date:'Y-m-d' }}">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col-md-6 form-group">
+                            <label>TTM</label>
+                            <input type="date" name="TTM_DATE" class="form-control" value="{{ license.TTM_DATE|date:'Y-m-d' }}">
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>TKT</label>
+                            <input type="date" name="TKT_DATE" class="form-control" value="{{ license.TKT_DATE|date:'Y-m-d' }}">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Запази</button>
+                    <a href="{% url 'manage_vehicles_licenses' %}" class="btn btn-secondary">Отказ</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% else %}
+<div class="alert alert-danger">
+    <h4>Достъп отказан!</h4>
+    <p>Тази страница е достъпна само за администратори.</p>
+</div>
+{% endif %}
+{% endblock %}

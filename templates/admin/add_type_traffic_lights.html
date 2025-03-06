@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% if request.user.is_superuser %} <!-- Проверка дали потребителят е администратор -->
+
+<div class="row">
+  <div class="col-12 grid-margin stretch-card"> <!-- Използва col-12 за full width -->
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Добавяне на тип светофар</h4>
+        <hr>
+        <form class="forms-sample" method="POST" action="{% url 'add_type_traffic_lights' %}">
+          {% include 'includes/messages.html' %}
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="exampleInputUsername1">Тип светофар</label>
+            <input type="text" placeholder="Моля, въведете тип светофар" name="type_traffic_lights_name"
+              class="form-control" required="true">
+          </div>
+          <button type="submit" class="btn btn-primary mr-2">Добавяне</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% else %}
+<div class="alert alert-danger" role="alert">
+  <h4 class="alert-heading">Достъп отказан!</h4>
+  <p>Тази страница е достъпна само за администратори.</p>
+</div>
+{% endif %}
+{% endblock %}

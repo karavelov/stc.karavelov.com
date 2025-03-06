@@ -1,0 +1,206 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if request.user.is_superuser %}
+
+<div class="row">
+  <div class="col-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Редактиране на фиш/акт</h4>
+        <hr>
+        <form method="POST">
+          {% csrf_token %}
+
+          <!-- Тип на документа -->
+          <div class="form-group">
+            <label>Тип на документа</label>
+            <select name="type_id" class="form-control" required>
+              <option value="1" {% if fine.type_id == 1 %}selected{% endif %}>Фиш</option>
+              <option value="2" {% if fine.type_id == 2 %}selected{% endif %}>Акт</option>
+            </select>
+          </div>
+
+          <!-- Търсене на превозно средство -->
+          <div class="form-group" style="position: relative;">
+            <label>Търсене на превозно средство (рег. номер)</label>
+            <input type="text" id="vehicle_search" class="form-control" placeholder="Търсене по номер"
+              value="{{ fine.mps.A }}" autocomplete="off" required>
+            <div id="vehicle_suggestions" class="list-group"
+              style="position: absolute; z-index: 1000; width: 100%; display: none;"></div>
+            <input type="hidden" name="mps_id" id="vehicle_id" value="{{ fine.mps.id }}">
+          </div>
+
+          <!-- Избор на полицай -->
+          <div class="form-group">
+            <label>Полицай</label>
+            <select name="officer_id" class="form-control" required>
+              <option value="">Изберете полицай</option>
+              {% for officer in officers %}
+              <option value="{{ officer.id }}" {% if fine.officer.id == officer.id %}selected{% endif %}>
+                {{ officer.first_name }} {{ officer.last_name }}
+              </option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <!-- Град -->
+          <div class="form-group" style="position: relative;">
+            <label>Град</label>
+            <input type="text" id="city_search" class="form-control" placeholder="Търсене на град"
+              value="{{ fine.city.city_name }}" autocomplete="off" required>
+            <div id="city_suggestions" class="list-group"
+              style="position: absolute; z-index: 1000; width: 100%; display: none;"></div>
+            <input type="hidden" name="city_id" id="city_id" value="{{ fine.city.id }}">
+          </div>
+
+          <!-- Улица -->
+          <div class="form-group">
+            <label>Улица</label>
+            <select name="street_id" id="street_select" class="form-control" required>
+              <option value="">Изберете улица</option>
+            </select>
+          </div>
+
+          <!-- Дата и час на нарушение -->
+          <div class="form-group">
+            <label>Дата и час на нарушение</label>
+            <input type="datetime-local" name="violation_datetime" class="form-control"
+              value="{{ fine.violation_datetime|date:'Y-m-d\\TH:i' }}" required>
+          </div>
+
+          <!-- Нарушение -->
+          <div class="form-group">
+            <label>Нарушение</label>
+            <textarea name="violation_text" class="form-control" required>{{ fine.violation_text }}</textarea>
+          </div>
+
+          <!-- Глоба -->
+          <div class="form-group">
+            <label>Глоба (лв.)</label>
+            <input type="number" name="fine_amount" class="form-control" value="{{ fine.fine_amount }}" required>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Запази промените</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function setupVehicleAutoSuggest() {
+    const input = document.getElementById('vehicle_search');
+    const suggestionsBox = document.getElementById('vehicle_suggestions');
+
+    input.addEventListener('input', function () {
+      const query = input.value.trim();
+      if (query.length < 2) {
+        suggestionsBox.style.display = "none";
+        return;
+      }
+
+      fetch(`/SearchVehiclesForTrafficFineAjax/?query=${encodeURIComponent(query)}`)
+        .then(response => response.json())
+        .then(data => {
+          suggestionsBox.innerHTML = '';
+          if (data.length > 0) {
+            data.forEach(vehicle => {
+              const item = document.createElement('a');
+              item.href = "#";
+              item.classList.add('list-group-item', 'list-group-item-action');
+              item.textContent = `${vehicle.registration_number} - ${vehicle.owner_name}`;
+              item.onclick = function (e) {
+                e.preventDefault();
+                input.value = vehicle.registration_number;
+                document.getElementById('vehicle_id').value = vehicle.id;
+                suggestionsBox.style.display = "none";
+              };
+              suggestionsBox.appendChild(item);
+            });
+            suggestionsBox.style.display = "block";
+          } else {
+            suggestionsBox.style.display = "none";
+          }
+        });
+    });
+  }
+
+  function setupCityAutoSuggest() {
+    const input = document.getElementById('city_search');
+    const suggestionsBox = document.getElementById('city_suggestions');
+
+    input.addEventListener('input', function () {
+      const query = input.value.trim();
+      if (query.length < 2) {
+        suggestionsBox.style.display = "none";
+        return;
+      }
+
+      fetch(`/SearchCityAjax/?query=${encodeURIComponent(query)}`)
+        .then(response => response.json())
+        .then(data => {
+          suggestionsBox.innerHTML = '';
+          if (data.length > 0) {
+            data.forEach(city => {
+              const item = document.createElement('a');
+              item.href = "#";
+              item.classList.add('list-group-item', 'list-group-item-action');
+              item.textContent = city.city_name;
+              item.onclick = function (e) {
+                e.preventDefault();
+                input.value = city.city_name;
+                document.getElementById('city_id').value = city.id;
+                suggestionsBox.style.display = "none";
+                loadStreetsForCity(city.id, null);
+              };
+              suggestionsBox.appendChild(item);
+            });
+            suggestionsBox.style.display = "block";
+          } else {
+            suggestionsBox.style.display = "none";
+          }
+        });
+    });
+  }
+
+  function loadStreetsForCity(cityId, selectedStreetId = null) {
+    const streetSelect = document.getElementById('street_select');
+    streetSelect.innerHTML = '<option value="">Зареждане...</option>';
+    streetSelect.disabled = true;
+
+    fetch(`/SearchStreetsAjax/?city_id=${cityId}`)
+      .then(response => response.json())
+      .then(data => {
+        streetSelect.innerHTML = '<option value="">Изберете улица</option>';
+        data.forEach(street => {
+          const option = document.createElement('option');
+          option.value = street.id;
+          option.textContent = street.street_name;
+          if (selectedStreetId && street.id == selectedStreetId) {
+            option.selected = true;
+          }
+          streetSelect.appendChild(option);
+        });
+        streetSelect.disabled = false;
+      });
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    setupVehicleAutoSuggest();
+    setupCityAutoSuggest();
+
+    const initialCityId = document.getElementById('city_id').value;
+    const selectedStreetId = "{{ fine.street.id|default_if_none:'' }}";
+
+    if (initialCityId) {
+      loadStreetsForCity(initialCityId, selectedStreetId);
+    }
+  });
+</script>
+
+{% else %}
+<div class="alert alert-danger">
+  <h4>Достъп отказан!</h4>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% if request.user.is_superuser %} 
+
+<div class="row">
+  <div class="col-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Добавяне на район</h4>
+        <hr>
+        <form class="forms-sample" method="POST" action="{% url 'add_region' %}">
+          {% include 'includes/messages.html' %}
+          {% csrf_token %}
+
+          <!-- Въвеждане на име на район -->
+          <div class="form-group">
+            <label for="regionname"><strong>Район</strong></label>
+            <input type="text" placeholder="Моля, въведете име на района" name="regionname" class="form-control" required>
+          </div>
+
+          <!-- Избор на град (Editable Select) -->
+          <div class="form-group">
+            <label for="city"><strong>Населено място</strong></label>
+            <div class="editable-select">
+              <input type="text" id="city-input" class="form-control" placeholder="Въведете град..." autocomplete="off">
+              <select name="city" id="city-select" class="form-control">
+                <option value="">Направете своя избор</option>
+              </select>
+              <ul id="city-dropdown" class="dropdown-menu"></ul>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary mr-2">Добавяне</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% else %}
+<div class="alert alert-danger" role="alert">
+  <h4 class="alert-heading">Достъп отказан!</h4>
+  <p>Тази страница е достъпна само за администратори.</p>
+</div>
+{% endif %}
+
+<!-- CSS за стилизиране -->
+<style>
+.editable-select {
+    position: relative;
+    width: 100%;
+}
+.editable-select input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 1px solid #ccc;
+    padding: 8px;
+    font-size: 16px;
+}
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: white;
+    border: 1px solid #ccc;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 10;
+}
+.dropdown-menu li {
+    padding: 8px;
+    cursor: pointer;
+}
+.dropdown-menu li:hover {
+    background: #f1f1f1;
+}
+</style>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+$(document).ready(function () {
+    // ГРАДОВЕ - Търсене и избор
+    $("#city-input").on("input", function () {
+        let query = $(this).val();
+        if (query.length >= 2) {
+            $.get("{% url 'ajax_search_traffic_lights_cities' %}", { q: query }, function (data) {
+                let dropdown = $("#city-dropdown");
+                dropdown.empty().show();
+                $.each(data.results, function (i, item) {
+                    dropdown.append('<li data-id="' + item.id + '">' + item.text + '</li>');
+                });
+            });
+        }
+    });
+
+    $("#city-dropdown").on("click", "li", function () {
+        let selectedText = $(this).text();
+        let selectedId = $(this).data("id");
+        $("#city-input").val(selectedText);
+        $("#city-select").html('<option value="' + selectedId + '" selected>' + selectedText + '</option>');
+        $("#city-dropdown").hide();
+    });
+});
+</script>
+
+{% endblock %}

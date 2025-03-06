@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if request.user.is_superuser %}
+
+<div class="row">
+    <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Управление на полицески длъжности</h4>
+
+                <form method="get" class="d-flex align-items-center w-100">
+                    <div class="form-group mb-0 mr-2" style="flex: 1; position: relative;">
+                        <label for="query" class="sr-only">Филтър по позиция</label>
+                        <input type="text" id="query" name="query" class="form-control"
+                            placeholder="Филтър по длъжност" value="{{ query }}" autocomplete="off">
+                        <div id="suggestions" class="list-group"
+                            style="position: absolute; z-index: 1000; width: 100%; display: none;"></div>
+                    </div>
+                    <button type="submit" class="btn btn-dark mr-2">Филтриране</button>
+                    <a href="{% url 'manage_position_occupied' %}" class="btn btn-secondary">Нулиране</a>
+                </form>
+
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        let queryInput = document.getElementById("query");
+                        let suggestionsBox = document.getElementById("suggestions");
+
+                        queryInput.addEventListener("input", function () {
+                            let query = queryInput.value.trim();
+                            if (query.length < 2) {
+                                suggestionsBox.style.display = "none";
+                                return;
+                            }
+
+                            fetch("/SearchPositionOccupiedAjax/?query=" + encodeURIComponent(query))
+                                .then(response => response.json())
+                                .then(data => {
+                                    suggestionsBox.innerHTML = "";
+                                    if (data.length > 0) {
+                                        suggestionsBox.style.display = "block";
+                                        data.forEach(position => {
+                                            let item = document.createElement("a");
+                                            item.href = "#";
+                                            item.classList.add("list-group-item", "list-group-item-action");
+                                            item.textContent = position.position_occupied_name;
+                                            item.addEventListener("click", function (event) {
+                                                event.preventDefault();
+                                                queryInput.value = position.position_occupied_name;
+                                                suggestionsBox.style.display = "none";
+                                                document.querySelector('form').submit();
+                                            });
+                                            suggestionsBox.appendChild(item);
+                                        });
+                                    } else {
+                                        suggestionsBox.style.display = "none";
+                                    }
+                                })
+                                .catch(error => console.error("Error fetching suggestions:", error));
+                        });
+
+                        document.addEventListener("click", function (event) {
+                            if (!queryInput.contains(event.target) && !suggestionsBox.contains(event.target)) {
+                                suggestionsBox.style.display = "none";
+                            }
+                        });
+                    });
+                </script>
+
+                <br />
+                {% include 'includes/messages.html' %}
+
+                <div class="table-responsive" style="margin-top:50px;">
+                    {% if position_items %}
+                    <table class="table table-bordered" style="border:1px solid #e8ecf1">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Длъжност</th>
+                                <th>Дата на създаване</th>
+                                <th>Дата на редактиране</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for i in position_items %}
+                            <tr>
+                                <td>{{ forloop.counter0|add:position_items.start_index }}</td>
+                                <td>{{ i.position_occupied_name }}</td>
+                                <td>{{ i.created_at|date:"H:i ч., d.m.Y" }} г.</td>
+                                <td>{{ i.updated_at|date:"H:i ч., d.m.Y" }} г.</td>
+                                <td>
+                                    <a href="{% url 'update_position_occupied' i.id %}"
+                                        class="btn btn-success btn-sm">Редактиране</a>
+                                    <a href="#" data-href="{% url 'delete_position_occupied' i.id %}"
+                                        class="btn btn-danger btn-sm delete-btn" style="margin-left:5px">Изтриване</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <p class="text-center font-weight-bold" style="margin-top:20px;">Няма записи!</p>
+                    {% endif %}
+                </div>
+
+                {% if position_items.has_other_pages %}
+                <div class="pagination" style="padding-top: 10px; text-align: center;">
+                    <div class="btn-group btn-group-sm" role="group">
+                        {% if position_items.has_previous %}
+                        <a href="?page={{ position_items.previous_page_number }}" class="btn btn-secondary">⟵</a>
+                        {% endif %}
+
+                        <span class="btn disabled">
+                            Страница {{ position_items.number }} от {{ position_items.paginator.num_pages }}
+                        </span>
+
+                        {% if position_items.has_next %}
+                        <a href="?page={{ position_items.next_page_number }}" class="btn btn-secondary">⟶</a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.querySelectorAll('.delete-btn').forEach(function (button) {
+        button.addEventListener('click', function (event) {
+            event.preventDefault();
+            const deleteUrl = this.getAttribute('data-href');
+            Swal.fire({
+                title: 'Сигурни ли сте?',
+                text: 'Това действие не може да бъде отменено!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Да, изтрий!',
+                cancelButtonText: 'Отказ'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = deleteUrl;
+                }
+            });
+        });
+    });
+</script>
+{% else %}
+<div class="alert alert-danger" role="alert">
+    <h4 class="alert-heading">Достъп отказан!</h4>
+    <p>Тази страница е достъпна само за администратори.</p>
+</div>
+{% endif %}
+{% endblock %}

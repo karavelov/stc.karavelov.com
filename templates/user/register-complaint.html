@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="row">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Регистрация на сигнал</h4>
+                <hr>
+                <form class="forms-sample" method="POST" action="{% url 'regcomplaint' %}" enctype="multipart/form-data">
+                    {% include 'includes/messages.html' %}
+                    {% csrf_token %}
+
+                    <!-- Категория -->
+                    <div class="form-group">
+                        <label for="category">Категория</label>
+                        <select name="cat_id" class="form-control" required id="category">
+                            <option value="">Изберете категория</option>
+                            {% for i in categories %}
+                            <option value="{{ i.id }}">{{ i.catname }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- Подкатегория -->
+                    <div class="form-group">
+                        <label for="subcategory">Подкатегория</label>
+                        <select class="form-control" name="subcategory_id" id="subcategory" required>
+                            <option value="">Изберете подкатегория</option>
+                        </select>
+                    </div>
+
+                    <!-- Поле за избор на град -->
+                    <div class="form-group">
+                        <label for="city">Населено място</label>
+                        <select name="city_id" class="form-control" id="city" required>
+                            <option value="">Изберете населено място</option>
+                            {% for city in cities %}
+                            <option value="{{ city.id }}">{{ city.city_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- Поле за избор на улица -->
+                    <div class="form-group">
+                        <label for="street">Улица</label>
+                        <select name="street_id" class="form-control" id="street" required>
+                            <option value="">Изберете улица</option>
+                        </select>
+                    </div>
+
+                    <!-- Описание на сигнала -->
+                    <div class="form-group">
+                        <label for="complaindetails">Описание на сигнала (макс 2000 думи)</label>
+                        <textarea name="complaindetails" required cols="10" rows="5" class="form-control"
+                            maxlength="2000" placeholder="Опишете детайлно сигнала..."></textarea>
+                    </div>
+
+                    <!-- Файл за прикачане -->
+                    <div class="form-group">
+                        <label for="compfile">Прикачена снимка</label>
+                        <input type="file" name="compfile" class="form-control" id="compfile" accept="image/*">
+                        <img id="preview-image" src="" alt="Преглед на снимката"
+                            style="display:none; max-width: 100%; margin-top: 10px;">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary mr-2">Изпрати</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript за динамично зареждане на подкатегории, градове и улици -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+        function getCSRFToken() {
+            return document.querySelector('[name=csrfmiddlewaretoken]').value;
+        }
+
+        // Зареждане на подкатегории при избор на категория
+        $('#category').change(function () {
+            var cid = $(this).val();
+            console.log("📢 Избрана категория ID:", cid);
+
+            if (cid) {
+                $.ajax({
+                    url: '/user/get_subcat/',
+                    type: 'GET',
+                    data: { 'c_id': cid },
+                    headers: { "X-CSRFToken": getCSRFToken() },  // ✅ Добавяме CSRF токен
+                    success: function (data) {
+                        console.log("📢 Отговор от сървъра:", data);
+                        $('#subcategory').html(data.subcat_options);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("❌ Грешка при зареждане на подкатегории:", xhr.responseText);
+                        alert("Неуспешно зареждане на подкатегории! Проверете връзката със сървъра.");
+                    }
+                });
+            } else {
+                $('#subcategory').html('<option value="">Изберете подкатегория</option>');
+            }
+        });
+
+        // Зареждане на улици при избор на град
+        $("#city").change(function () {
+            var cityId = $(this).val();
+            let streetSelect = $("#street");
+            streetSelect.html('<option value="">Изберете улица</option>');
+
+            if (cityId) {
+                $.ajax({
+                    url: "/user/get_streets/",
+                    type: "GET",
+                    data: { city_id: cityId },
+                    headers: { "X-CSRFToken": getCSRFToken() },
+                    success: function (data) {
+                        streetSelect.empty().append('<option value="">Изберете улица</option>');
+                        data.streets.forEach(street => {
+                            streetSelect.append(`<option value="${street.id}">${street.street_name}</option>`);
+                        });
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% if request.user.is_superuser %} <!-- Проверка дали потребителят е администратор -->
+
+<div class="row">
+
+  <div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Детайли за потребителя</h4>
+        {% include 'includes/messages.html' %}
+        <table class="table table-bordered">
+          <thead>
+
+          </thead>
+          <tbody>
+
+            <tr>
+              <td><b>Име на потребителя</b></td>
+              <td>{{listedusers.admin.first_name}} {{listedusers.admin.last_name}}</td>
+              <td><b>Имейл</b></td>
+              <td>{{listedusers.admin.email}}</td>
+            </tr>
+
+            <tr>
+              <td><b>Профилна снимка</b></td>
+              <td colspan="4">
+                {% if listedusers.admin.profile_pic %}
+                <img src="/{{ listedusers.admin.profile_pic }}" alt="Профилна снимка"
+                  style="max-width: 150px; border-radius: 50%;">
+                {% else %}
+                <img src="/static/images/default_profile.png" alt="Няма снимка"
+                  style="max-width: 150px; border-radius: 50%;">
+                {% endif %}
+              </td>
+            </tr>
+
+
+            <tr>
+              <td><b>Телефонен номер</b></td>
+              <td>{{listedusers.mobilenumber}}</td>
+              <td><b>Дата на регистрация</b></td>
+              <td>{{listedusers.regdate_at}}</td>
+            </tr>
+
+          </tbody>
+        </table>
+
+        <hr>
+
+        <!---- История на подадени сигнали --->
+
+      </div>
+
+    </div>
+  </div>
+
+</div>
+{% else %}
+<div class="alert alert-danger" role="alert">
+  <h4 class="alert-heading">Достъп отказан!</h4>
+  <p>Тази страница е достъпна само за администратори.</p>
+</div>
+{% endif %}
+{% endblock %}

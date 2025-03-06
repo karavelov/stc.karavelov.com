@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% if request.user.is_superuser %}
+
+<div class="row">
+    <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Редактиране на ODMVR</h4>
+
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="odmvr_name">Име</label>
+                        <input type="text" class="form-control" id="odmvr_name" name="odmvr_name" 
+                               value="{{ odmvr.odmvr_name }}" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Запази</button>
+                    <a href="{% url 'manage_odmvr' %}" class="btn btn-secondary">Отказ</a>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% else %}
+<div class="alert alert-danger">
+    <h4>Достъп отказан!</h4>
+    <p>Тази страница е достъпна само за администратори.</p>
+</div>
+{% endif %}
+
+{% endblock %}

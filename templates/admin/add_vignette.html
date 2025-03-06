@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if request.user.is_superuser %}
+
+<div class="row">
+  <div class="col-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Добавяне на винетка</h4>
+        <hr>
+        <form method="POST">
+          {% csrf_token %}
+
+          <!-- Търсене на превозно средство -->
+          <div class="form-group" style="position: relative;">
+            <label>Търсене на превозно средство (рег. номер)</label>
+            <input type="text" id="vehicle_search" class="form-control" placeholder="Търсене по номер" autocomplete="off" required>
+            <div id="vehicle_suggestions" class="list-group" style="position: absolute; z-index: 1000; width: 100%; display: none;"></div>
+            <input type="hidden" name="mps_id" id="vehicle_id">
+          </div>
+
+          <!-- Дата на издаване -->
+          <div class="form-group">
+            <label>Дата на издаване</label>
+            <input type="date" name="issue_date" class="form-control" required>
+          </div>
+
+          <!-- Валидна от -->
+          <div class="form-group">
+            <label>Валидна от</label>
+            <input type="date" name="valid_from" class="form-control" required>
+          </div>
+
+          <!-- Валидна до -->
+          <div class="form-group">
+            <label>Валидна до</label>
+            <input type="date" name="valid_to" class="form-control" required>
+          </div>
+
+          <!-- Бутон за запис -->
+          <button type="submit" class="btn btn-primary">Добави винетка</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    let searchInput = document.getElementById("vehicle_search");
+    let suggestionsBox = document.getElementById("vehicle_suggestions");
+    let vehicleIdInput = document.getElementById("vehicle_id");
+
+    searchInput.addEventListener("input", function () {
+        let query = searchInput.value.trim();
+        if (query.length < 2) {
+            suggestionsBox.style.display = "none";
+            return;
+        }
+
+        fetch("/SearchVehiclesForVignetteAjax/?query=" + encodeURIComponent(query))
+            .then(response => response.json())
+            .then(data => {
+                suggestionsBox.innerHTML = "";
+                if (data.length > 0) {
+                    suggestionsBox.style.display = "block";
+                    data.forEach(vehicle => {
+                        let item = document.createElement("a");
+                        item.href = "#";
+                        item.classList.add("list-group-item", "list-group-item-action");
+                        item.textContent = vehicle.registration_number + " - " + vehicle.owner_name;
+                        item.addEventListener("click", function (event) {
+                            event.preventDefault();
+                            searchInput.value = vehicle.registration_number;
+                            vehicleIdInput.value = vehicle.id;
+                            suggestionsBox.style.display = "none";
+                        });
+                        suggestionsBox.appendChild(item);
+                    });
+                } else {
+                    suggestionsBox.style.display = "none";
+                }
+            })
+            .catch(error => console.error("Грешка при търсене:", error));
+    });
+
+    document.addEventListener("click", function (event) {
+        if (!searchInput.contains(event.target) && !suggestionsBox.contains(event.target)) {
+            suggestionsBox.style.display = "none";
+        }
+    });
+});
+</script>
+
+{% else %}
+<div class="alert alert-danger">
+  <h4>Достъп отказан!</h4>
+  <p>Тази страница е достъпна само за администратори.</p>
+</div>
+{% endif %}
+{% endblock %}

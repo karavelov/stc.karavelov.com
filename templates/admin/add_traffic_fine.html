@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if request.user.is_superuser %}
+
+<div class="row">
+  <div class="col-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Добавяне на фиш</h4>
+        <hr>
+        <form method="POST">
+          {% csrf_token %}
+
+          <div class="form-group" style="position: relative;">
+            <label>Търсене на превозно средство (рег. номер)</label>
+            <input type="text" id="vehicle_search" class="form-control" placeholder="Търсене по номер" autocomplete="off" required>
+            <div id="vehicle_suggestions" class="list-group" style="position: absolute; z-index: 1000; width: 100%; display: none;"></div>
+            <input type="hidden" name="mps_id" id="vehicle_id">
+          </div>
+
+          <div class="form-group">
+            <label>Тип на документа</label>
+            <select name="type_id" class="form-control" required>
+              <option value="1" {% if fine.type_id == 1 %}selected{% endif %}>Фиш</option>
+              <option value="2" {% if fine.type_id == 2 %}selected{% endif %}>Акт</option>
+            </select>
+          </div>
+
+          
+          <div class="form-group">
+            <label>Полицай</label>
+            <select name="officer_id" class="form-control" required>
+              <option value="">Изберете полицай</option>
+              {% for officer in officers %}
+              <option value="{{ officer.id }}">{{ officer.first_name }} {{ officer.last_name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Дата и час на нарушение</label>
+            <input type="datetime-local" name="violation_datetime" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label>Град</label>
+            <input type="text" id="city_search" class="form-control" placeholder="Търсене на град" autocomplete="off" required>
+            <div id="city_suggestions" class="list-group" style="position: absolute; z-index: 1000; width: 100%; display: none;"></div>
+            <input type="hidden" name="city_id" id="city_id">
+          </div>
+
+          <div class="form-group">
+            <label>Улица</label>
+            <select name="street_id" id="street_select" class="form-control" disabled>
+              <option value="">Изберете град първо</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Нарушение</label>
+            <textarea name="violation_text" class="form-control" required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Глоба (лв.)</label>
+            <input type="number" name="fine_amount" class="form-control" required>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Добави фиш</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function setupAutoSuggest(inputId, suggestionsId, hiddenInputId, url, displayField, callback) {
+  const input = document.getElementById(inputId);
+  const suggestions = document.getElementById(suggestionsId);
+
+  input.addEventListener('input', function () {
+    let query = this.value;
+    if (query.length >= 2) {
+      fetch(url + encodeURIComponent(query))
+        .then(response => response.json())
+        .then(data => {
+          suggestions.innerHTML = '';
+          if (data.length > 0) {
+            data.forEach(item => {
+              let element = document.createElement('a');
+              element.classList.add('list-group-item', 'list-group-item-action');
+              element.textContent = item[displayField];
+              element.onclick = () => {
+                input.value = item[displayField];
+                document.getElementById(hiddenInputId).value = item.id;
+                suggestions.style.display = 'none';
+                if (callback) callback(item.id);
+              };
+              suggestions.appendChild(element);
+            });
+            suggestions.style.display = 'block';
+          } else {
+            suggestions.style.display = 'none';
+          }
+        });
+    } else {
+      suggestions.style.display = 'none';
+    }
+  });
+}
+
+setupAutoSuggest(
+  'vehicle_search',
+  'vehicle_suggestions',
+  'vehicle_id',
+  '/SearchVehiclesForTrafficFineAjax/?query=',
+  'registration_number'
+);
+
+setupAutoSuggest(
+  'city_search',
+  'city_suggestions',
+  'city_id',
+  '/SearchCitiesAjax/?query=',
+  'city_name',
+  loadStreetsForCity
+);
+
+function loadStreetsForCity(cityId) {
+  const streetSelect = document.getElementById('street_select');
+  streetSelect.innerHTML = '<option value="">Зареждане...</option>';
+  streetSelect.disabled = true;
+
+  fetch(`/SearchStreetsAjax/?city_id=${cityId}`)
+    .then(response => response.json())
+    .then(data => {
+      streetSelect.innerHTML = '<option value="">Изберете улица</option>';
+      data.forEach(street => {
+        let option = document.createElement('option');
+        option.value = street.id;
+        option.textContent = street.street_name;
+        streetSelect.appendChild(option);
+      });
+      streetSelect.disabled = false;
+    });
+}
+</script>
+
+{% else %}
+<div class="alert alert-danger">
+  <h4>Достъп отказан!</h4>
+</div>
+{% endif %}
+{% endblock %}

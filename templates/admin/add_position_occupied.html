@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if request.user.is_superuser %}
+
+<div class="row">
+  <div class="col-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Добавяне на полицейска длъжност</h4>
+        <form class="forms-sample" method="POST">
+          {% include 'includes/messages.html' %}
+          {% csrf_token %}
+          <div class="form-group">
+            <label>Длъжност</label>
+            <input type="text" name="position_occupied_name" class="form-control" required>
+          </div>
+          <button type="submit" class="btn btn-primary mr-2">Добавяне</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% else %}
+<div class="alert alert-danger">
+  <h4 class="alert-heading">Достъп отказан!</h4>
+</div>
+{% endif %}
+{% endblock %}

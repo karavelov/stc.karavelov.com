@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="sub-title">Търсене на полицай</h4>
+                <form method="get">
+                    {% csrf_token %}
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">Търсене по регистрационен номер или ЕГН</label>
+                        <div class="col-sm-10">
+                            <input type="text" id="query" name="query" class="form-control" required="">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-10">
+                            <button type="submit" class="btn btn-dark">Търси</button>
+                        </div>
+                    </div>
+                </form>
+
+                {% if search_results %}
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th style="font-weight: bolder;"> # </th>
+                            <th style="font-weight: bolder;"> Регистрационен номер / ЕГН </th>
+                            <th style="font-weight: bolder;"> Пълно име </th>
+                            <th style="font-weight: bolder;"> Имейл </th>
+                            <th style="font-weight: bolder;"> Действие </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for result in search_results %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>
+                                {% if result.registration_number %}
+                                    {{ result.registration_number }}
+                                {% elif result.egn %}
+                                    {{ result.egn }}
+                                {% else %}
+                                    Няма данни
+                                {% endif %}
+                            </td>
+                            <td>{{ result.first_name }} {{ result.last_name }}</td>
+                            <td>{{ result.email }}</td>
+                            <td>
+                                <a href="{% url 'view_user' result.id %}" class="btn btn-success">Преглед</a>
+                                <a href="{% url 'delete_user' result.id %}" class="btn btn-danger">Изтриване</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                    {% if query %}
+                        <p style="font-size: 20px;color: blue;text-align: center;">Не са намерени записи за: "{{ query }}"</p>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

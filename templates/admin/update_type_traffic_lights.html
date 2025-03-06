@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Редактиране на тип светофар</h4>
+
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="type_traffic_lights_name">Тип светофар</label>
+                        <input type="text" class="form-control" id="type_traffic_lights_name" name="type_traffic_lights_name" 
+                               value="{{ type_traffic_lights.type_traffic_lights_name }}" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Запази</button>
+                    <a href="{% url 'manage_type_traffic_lights' %}" class="btn btn-secondary">Отказ</a>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

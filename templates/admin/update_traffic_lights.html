@@ -1,0 +1,198 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% if request.user.is_superuser %} 
+
+<div class="row">
+  <div class="col-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Редактиране на светофар</h4>
+        <hr>
+        <form class="forms-sample" method="POST" action="{% url 'update_traffic_lights' traffic_light.id %}">
+          {% include 'includes/messages.html' %}
+          {% csrf_token %}
+
+          <!-- Избор на тип светофар -->
+          <div class="form-group">
+            <label for="type_traffic_light">Тип на светофара</label>
+            <select name="type_traffic_light" class="form-control" required>
+              <option value="">Изберете тип...</option>
+              {% for type in type_traffic_lights %}
+              <option value="{{ type.id }}" {% if traffic_light.type_traffic_light.id == type.id %}selected{% endif %}>
+                {{ type.type_traffic_lights_name }}
+              </option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <!-- Избор на град с Editable Select -->
+          <div class="form-group">
+            <label for="city">Град</label>
+            <div class="editable-select">
+              <input type="text" id="city-input" class="form-control" placeholder="Въведете град..." autocomplete="off" value="{{ traffic_light.city.city_name }}">
+              <select name="city" id="city-select" class="form-control">
+                <option value="{{ traffic_light.city.id }}" selected>{{ traffic_light.city.city_name }}</option>
+              </select>
+              <ul id="city-dropdown" class="dropdown-menu"></ul>
+            </div>
+          </div>
+
+          <!-- Избор на улица -->
+          <div class="form-group">
+            <label for="street">Улица</label>
+            <div class="editable-select">
+              <input type="text" id="street-input" class="form-control" placeholder="Въведете улица..." autocomplete="off" value="{{ traffic_light.street.street_name }}">
+              <select name="street" id="street-select" class="form-control">
+                <option value="{{ traffic_light.street.id }}" selected>{{ traffic_light.street.street_name }}</option>
+              </select>
+              <ul id="street-dropdown" class="dropdown-menu"></ul>
+            </div>
+          </div>
+
+          <!-- Избор на регион -->
+          <div class="form-group">
+            <label for="region">Регион</label>
+            <div class="editable-select">
+              <input type="text" id="region-input" class="form-control" placeholder="Въведете регион..." autocomplete="off" value="{{ traffic_light.region.regionname }}">
+              <select name="region" id="region-select" class="form-control">
+                <option value="{{ traffic_light.region.id }}" selected>{{ traffic_light.region.regionname }}</option>
+              </select>
+              <ul id="region-dropdown" class="dropdown-menu"></ul>
+            </div>
+          </div>
+
+          <!-- Поле за тема -->
+          <div class="form-group">
+            <label for="topic">Тема</label>
+            <textarea name="topic" id="topic" class="form-control" rows="3" placeholder="Въведете информация за светофара..." required>{{ traffic_light.topic }}</textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary mr-2">Запази</button>
+          <a href="{% url 'manage_traffic_lights' %}" class="btn btn-secondary">Отказ</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% else %}
+<div class="alert alert-danger" role="alert">
+  <h4 class="alert-heading">Достъп отказан!</h4>
+  <p>Тази страница е достъпна само за администратори.</p>
+</div>
+{% endif %}
+
+<!-- CSS за стилизиране -->
+<style>
+.editable-select {
+    position: relative;
+    width: 100%;
+}
+.editable-select input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 1px solid #ccc;
+    padding: 8px;
+    font-size: 16px;
+}
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: white;
+    border: 1px solid #ccc;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 10;
+}
+.dropdown-menu li {
+    padding: 8px;
+    cursor: pointer;
+}
+.dropdown-menu li:hover {
+    background: #f1f1f1;
+}
+</style>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+$(document).ready(function () {
+    // ГРАДОВЕ - Търсене и избор
+    $("#city-input").on("input", function () {
+        let query = $(this).val();
+        if (query.length >= 2) {
+            $.get("{% url 'ajax_search_traffic_lights_cities' %}", { q: query }, function (data) {
+                let dropdown = $("#city-dropdown");
+                dropdown.empty().show();
+                $.each(data.results, function (i, item) {
+                    dropdown.append('<li data-id="' + item.id + '">' + item.text + '</li>');
+                });
+            });
+        }
+    });
+
+    $("#city-dropdown").on("click", "li", function () {
+        let selectedText = $(this).text();
+        let selectedId = $(this).data("id");
+        $("#city-input").val(selectedText);
+        $("#city-select").html('<option value="' + selectedId + '" selected>' + selectedText + '</option>');
+        $("#city-dropdown").hide();
+    });
+
+    // УЛИЦИ - Търсене и избор
+    $("#street-input").on("input", function () {
+        let query = $(this).val();
+        let cityId = $("#city-select").val();
+        if (query.length >= 2 && cityId) {
+            $.get("{% url 'ajax_search_traffic_lights_streets' %}", { city_id: cityId, q: query }, function (data) {
+                let dropdown = $("#street-dropdown");
+                dropdown.empty().show();
+                $.each(data.results, function (i, item) {
+                    dropdown.append('<li data-id="' + item.id + '">' + item.text + '</li>');
+                });
+            });
+        }
+    });
+
+    $("#street-dropdown").on("click", "li", function () {
+        let selectedText = $(this).text();
+        let selectedId = $(this).data("id");
+        $("#street-input").val(selectedText);
+        $("#street-select").html('<option value="' + selectedId + '" selected>' + selectedText + '</option>');
+        $("#street-dropdown").hide();
+    });
+
+    // РЕГИОНИ - Търсене и избор
+    $("#region-input").on("input", function () {
+        let query = $(this).val();
+        let cityId = $("#city-select").val();
+        if (query.length >= 2 && cityId) {
+            $.get("{% url 'ajax_search_traffic_lights_regions' %}", { city_id: cityId, q: query }, function (data) {
+                let dropdown = $("#region-dropdown");
+                dropdown.empty().show();
+                $.each(data.results, function (i, item) {
+                    dropdown.append('<li data-id="' + item.id + '">' + item.text + '</li>');
+                });
+            });
+        }
+    });
+
+    $("#region-dropdown").on("click", "li", function () {
+        let selectedText = $(this).text();
+        let selectedId = $(this).data("id");
+        $("#region-input").val(selectedText);
+        $("#region-select").html('<option value="' + selectedId + '" selected>' + selectedText + '</option>');
+        $("#region-dropdown").hide();
+    });
+});
+</script>
+
+{% endblock %}

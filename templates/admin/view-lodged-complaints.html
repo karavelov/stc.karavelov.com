@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row">
+    <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Детайли на сигнала</h4>
+                {% include 'includes/messages.html' %}
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <td class="font-weight-bold">Номер на сигнал</td>
+                            <td>{{ complaint.complaint_number }}</td>
+                            <td class="font-weight-bold">Име на сигнализиращ</td>
+                            <td>{{ complaint.userregid.admin.first_name }} {{ complaint.userregid.admin.last_name }}</td>
+                        </tr>
+                        <tr>
+                            <td class="font-weight-bold">Дата на изпращане</td>
+                            <td>{{ complaint.complaintdate_at|date:"d.m.Y H:i ч." }}</td>
+                            <td class="font-weight-bold">Категория</td>
+                            <td>{{ complaint.cat_id.catname }}</td>
+                        </tr>
+                        <tr>
+                            <td class="font-weight-bold">Подкатегория</td>
+                            <td>{{ complaint.subcategory_id.subcatname }}</td>
+                            <td class="font-weight-bold">Статус</td>
+                            <td>
+                                {% if complaint.status == '0' %}
+                                    <span class="badge badge-danger">Необработен</span>
+                                {% elif complaint.status == 'Inprocess' %}
+                                    <span class="badge badge-warning">В процес</span>
+                                {% elif complaint.status == 'Closed' %}
+                                    <span class="badge badge-success">Затворен</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="font-weight-bold">Град</td>
+                            <td>{{ complaint.city.city_name }}</td>
+                            <td class="font-weight-bold">Улица</td>
+                            <td>{{ complaint.street.street_name }}</td>
+                        </tr>
+                        <tr>
+                            <td class="font-weight-bold">Описание на сигнала</td>
+                            <td colspan="3">{{ complaint.complaindetails }}</td>
+                        </tr>
+                        <tr>
+                            <td class="font-weight-bold">Прикачена снимка</td>
+                            <td colspan="3">
+                                {% if complaint.compfile %}
+                                    <a href="#" class="open-image-modal" data-image="{{ complaint.compfile.url }}">
+                                        <img src="{{ complaint.compfile.url }}" alt="Преглед на снимката" 
+                                             style="max-width: 300px; max-height: 200px; border-radius: 5px;">
+                                    </a>
+                                {% else %}
+                                    Няма прикачена снимка
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h4 class="card-title mt-4">История на коментарите</h4>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th style="text-align: center;">#</th>
+                            <th style="text-align: left;">Коментар</th>
+                            <th style="text-align: center;">Статус</th>
+                            <th style="text-align: center;">Дата на обновяване</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for remark in complaintsremarks %}
+                        <tr>
+                            <td style="text-align: center;">{{ forloop.counter }}</td>
+                            <td>{{ remark.remark }}</td>
+                            <td style="text-align: center;">
+                                {% if remark.status == 'Inprocess' %}
+                                    В процес
+                                {% elif remark.status == 'Closed' %}
+                                    Затворен
+                                {% else %}
+                                    Необработен
+                                {% endif %}
+                            </td>
+                            <td style="text-align: center;">{{ remark.remarkdate|date:"d.m.Y H:i ч." }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4" class="text-center">Няма добавени коментари.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

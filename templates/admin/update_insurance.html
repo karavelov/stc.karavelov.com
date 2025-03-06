@@ -1,0 +1,76 @@
+<!-- update_insurance.html -->
+{% extends 'base.html' %}
+{% block content %}
+{% if request.user.is_superuser %}
+
+<div class="row">
+  <div class="col-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Редактиране на застраховка</h4>
+        <hr>
+        <form method="POST">
+          {% csrf_token %}
+
+          <div class="form-group" style="position: relative;">
+            <label>Търсене на превозно средство (рег. номер)</label>
+            <input type="text" id="vehicle_search" class="form-control"
+                value="{{ insurance.mps.A }}" placeholder="Търсене по номер" autocomplete="off" required>
+            <div id="vehicle_suggestions" class="list-group"
+                style="position: absolute; z-index: 1000; width: 100%; display: none;"></div>
+            <input type="hidden" name="mps_id" id="vehicle_id" value="{{ insurance.mps.id }}">
+          </div>
+
+          <div class="form-group">
+            <label>Номер на полица</label>
+            <input type="text" name="insurance_policy" class="form-control" value="{{ insurance.insurance_policy }}" required>
+          </div>
+
+          <div class="form-group">
+            <label>Номер на стикер</label>
+            <input type="text" name="sticker_number" class="form-control" value="{{ insurance.sticker_number }}" required>
+          </div>
+
+          <div class="form-group">
+            <label>Компания</label>
+            <input type="text" name="company" class="form-control" value="{{ insurance.company }}" required>
+          </div>
+
+          <div class="form-group">
+            <label>Дата на издаване</label>
+            <input type="date" name="issue_date" class="form-control" value="{{ insurance.issue_date|date:'Y-m-d' }}" required>
+          </div>
+
+          <div class="form-group">
+            <label>Валидна от</label>
+            <input type="date" name="valid_from" class="form-control" value="{{ insurance.valid_from|date:'Y-m-d' }}" required>
+          </div>
+
+          <div class="form-group">
+            <label>Валидна до</label>
+            <input type="date" name="valid_to" class="form-control" value="{{ insurance.valid_to|date:'Y-m-d' }}" required>
+          </div>
+
+          <div class="form-group">
+            <label>Място на издаване</label>
+            <input type="text" name="issue_place" class="form-control" value="{{ insurance.issue_place }}" required>
+          </div>
+
+          <div class="form-group">
+            <label>Застраховател</label>
+            <input type="text" name="insurer" class="form-control" value="{{ insurance.insurer }}" required>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Запази промените</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% else %}
+<div class="alert alert-danger">
+  <h4>Достъп отказан!</h4>
+</div>
+{% endif %}
+{% endblock %}

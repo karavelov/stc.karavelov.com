@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% if request.user.is_superuser %}
+
+<div class="row">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Редактиране на собственик на превозно средство</h4>
+                <hr>
+                <form class="forms-sample" method="POST">
+                    {% include 'includes/messages.html' %}
+                    {% csrf_token %}
+
+                    <div class="form-group">
+                        <label>Име (Name)</label>
+                        <input type="text" name="name" class="form-control" value="{{ owner.name }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Презиме (Fathers Name)</label>
+                        <input type="text" name="fathers_name" class="form-control" value="{{ owner.fathers_name }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Фамилия (Surname)</label>
+                        <input type="text" name="surname" class="form-control" value="{{ owner.surname }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>ЕГН (Personal NO)</label>
+                        <input type="text" name="personal_no" class="form-control" value="{{ owner.personal_no }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Гражданство (Nationality)</label>
+                        <input type="text" name="nationality" class="form-control" value="{{ owner.nationality }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Дата на раждане (Date of birth)</label>
+                        <input type="date" name="date_of_birth" class="form-control" value="{{ owner.date_of_birth|date:'Y-m-d' }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Валидност (Date of expiry)</label>
+                        <input type="date" name="date_of_expiry" class="form-control" value="{{ owner.date_of_expiry|date:'Y-m-d' }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>N на документа (Document number)</label>
+                        <input type="text" name="document_number" class="form-control" value="{{ owner.document_number }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Място на раждане (Place of birth)</label>
+                        <input type="text" name="place_of_birth" class="form-control" value="{{ owner.place_of_birth }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Постоянен адрес (Residance)</label>
+                        <input type="text" name="residence" class="form-control" value="{{ owner.residence }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Ръст (Height)</label>
+                        <input type="number" name="height" class="form-control" value="{{ owner.height }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Цвят на очите (Color of eyes)</label>
+                        <input type="text" name="color_of_eyes" class="form-control" value="{{ owner.color_of_eyes }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Издаден от (Authority)</label>
+                        <input type="text" name="authority" class="form-control" value="{{ owner.authority }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Дата на издаване (Date of issue)</label>
+                        <input type="date" name="date_of_issue" class="form-control" value="{{ owner.date_of_issue|date:'Y-m-d' }}" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Запази</button>
+                    <a href="{% url 'manage_vehicles_owners' %}" class="btn btn-secondary">Отказ</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% else %}
+<div class="alert alert-danger">
+    <h4>Достъп отказан!</h4>
+    <p>Тази страница е достъпна само за администратори.</p>
+</div>
+{% endif %}
+{% endblock %}

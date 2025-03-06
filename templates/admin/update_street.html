@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% if request.user.is_superuser %} <!-- Проверка дали потребителят е администратор -->
+
+<div class="row">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Редактиране на улица</h4>
+                <hr>
+                <form class="forms-sample" method="POST" action="{% url 'update_street_details' %}">
+                    {% include 'includes/messages.html' %}
+                    {% csrf_token %}
+
+                    <!-- Поле за избор на населено място -->
+                    <div class="form-group">
+                        <label for="city_id">Населено място</label>
+                        <select name="city_id" class="form-control" required>
+                            {% for i in cities %}
+                            <option value="{{ i.id }}" {% if i.id == street.city_id_id %} selected {% endif %}>
+                                {{ i.city_name }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- Поле за име на улицата -->
+                    <div class="form-group">
+                        <label for="street_name"><strong>Улица</strong></label>
+                        <input type="text" name="street_name" class="form-control" id="street_name" required
+                            value="{{ street.street_name }}" placeholder="Въведете име на улица" />
+                    </div>
+
+                    <!-- Скрито поле за ID на улицата -->
+                    <input type="hidden" name="street_id" class="form-control" id="street_id" value="{{ street.id }}" />
+
+                    <button type="submit" class="btn btn-primary mr-2">Запази промените</button>
+                    <a href="{% url 'manage_street' %}" class="btn btn-secondary">Отказ</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% else %}
+<div class="alert alert-danger" role="alert">
+    <h4 class="alert-heading">Достъп отказан!</h4>
+    <p>Тази страница е достъпна само за администратори.</p>
+</div>
+{% endif %}
+
+{% endblock %}

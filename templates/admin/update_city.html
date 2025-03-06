@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="row">
+    <div class="col-12 grid-margin stretch-card"> <!-- Full width -->
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Редактиране на населено място</h4>
+                <hr>
+                <form class="forms-sample" method="POST" action="{% url 'update_city_details' %}">
+                    {% include 'includes/messages.html' %}
+                    {% csrf_token %}
+
+                    <!-- Поле за име на региона -->
+                    <div class="form-group">
+                        <label for="cityname"><strong>Град</strong></label>
+                        <input type="text" name="city_name" class="form-control" id="city_name" required
+                            value="{{ city.city_name }}" placeholder="Въведете име на град" />
+                    </div>
+
+                    <!-- Поле за пощенски код -->
+                    <div class="form-group">
+                        <label for="post_code"><strong>Пощенски код</strong></label>
+                        <input type="text" name="post_code" class="form-control" id="post_code" required
+                            value="{{ city.post_code }}" placeholder="Въведете пощенски код" />
+                    </div>
+
+                    <!-- Скрито поле за ID на региона -->
+                    <input type="hidden" name="city_id" class="form-control" id="city_id" value="{{ city.id }}" />
+
+                    <button type="submit" class="btn btn-primary mr-2">Редактиране</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

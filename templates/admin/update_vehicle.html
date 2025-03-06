@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if request.user.is_superuser %}
+
+<div class="row">
+  <div class="col-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Редактиране на превозно средство</h4>
+        <hr>
+        <form method="POST">
+          {% csrf_token %}
+
+          <!-- Регистрационен номер -->
+          <div class="form-group">
+            <label>Регистрационен номер</label>
+            <input type="text" name="A" class="form-control" value="{{ vehicle.A }}" required>
+          </div>
+
+          <!-- Уникален номер -->
+          <div class="form-group">
+            <label>Уникален номер (E)</label>
+            <input type="text" name="E" class="form-control" value="{{ vehicle.E }}" required>
+          </div>
+
+          <!-- Вид превозно средство -->
+          <div class="form-group">
+            <label>Вид превозно средство</label>
+            <select name="D" class="form-control" required>
+              {% for vt in vehicle_types %}
+              <option value="{{ vt.id }}" {% if vehicle.D.id == vt.id %}selected{% endif %}>
+                {{ vt.vehicle_type_name }}
+              </option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <!-- Собственик -->
+          <div class="form-group">
+            <label>Собственик</label>
+            <select name="owner_id" class="form-control" required>
+              {% for owner in owners %}
+              <option value="{{ owner.id }}" {% if vehicle.owner.id == owner.id %}selected{% endif %}>
+                {{ owner.name }} {{ owner.surname }}
+              </option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <!-- Дата на производство -->
+          <div class="form-group">
+            <label>Дата на производство</label>
+            <input type="date" name="B" class="form-control" value="{{ vehicle.B|date:'Y-m-d' }}">
+          </div>
+
+          <!-- Мощност на двигателя -->
+          <div class="form-group">
+            <label>Мощност на двигателя (P1)</label>
+            <input type="number" name="P1" class="form-control" value="{{ vehicle.P1 }}">
+          </div>
+
+          <!-- Тегло -->
+          <div class="form-group">
+            <label>Тегло (F1)</label>
+            <input type="number" name="F1" class="form-control" value="{{ vehicle.F1 }}">
+          </div>
+
+          <!-- Цвят -->
+          <div class="form-group">
+            <label>Цвят (P3)</label>
+            <input type="text" name="P3" class="form-control" value="{{ vehicle.P3 }}">
+          </div>
+
+          <!-- Година на регистрация -->
+          <div class="form-group">
+            <label>Година на регистрация</label>
+            <input type="number" name="P5" class="form-control" value="{{ vehicle.P5 }}">
+          </div>
+
+          <!-- Застраховка -->
+          <div class="form-group">
+            <label>Има валидна застраховка?</label>
+            <select name="valid_insurance" class="form-control">
+              <option value="True" {% if vehicle.valid_insurance %}selected{% endif %}>Да</option>
+              <option value="False" {% if not vehicle.valid_insurance %}selected{% endif %}>Не</option>
+            </select>
+          </div>
+
+          <!-- Поле за застраховка -->
+          <div class="form-group">
+            <label>Застрахователна полица</label>
+            <select name="insurance_id" class="form-control">
+              <option value="">-- Няма --</option>
+              {% for insurance in insurances %}
+              <option value="{{ insurance.id }}" {% if vehicle.insurance and vehicle.insurance.id == insurance.id %}selected{% endif %}>
+                {{ insurance.insurance_policy }} - {{ insurance.company }}
+              </option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <!-- Винетка -->
+          <div class="form-group">
+            <label>Има валидна винетка?</label>
+            <select name="valid_vignette" class="form-control">
+              <option value="True" {% if vehicle.valid_vignette %}selected{% endif %}>Да</option>
+              <option value="False" {% if not vehicle.valid_vignette %}selected{% endif %}>Не</option>
+            </select>
+          </div>
+
+          <!-- Поле за винетка -->
+          <div class="form-group">
+            <label>Винетка</label>
+            <select name="vignette_id" class="form-control">
+              <option value="">-- Няма --</option>
+              {% for vignette in vignettes %}
+              <option value="{{ vignette.id }}" {% if vehicle.vignette and vehicle.vignette.id == vignette.id %}selected{% endif %}>
+                Винетка №{{ vignette.id }} - Валидна до {{ vignette.valid_to }}
+              </option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <!-- Бутон за запис -->
+          <button type="submit" class="btn btn-primary">Запази промените</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% else %}
+<div class="alert alert-danger">
+  <h4>Достъп отказан!</h4>
+  <p>Тази страница е достъпна само за администратори.</p>
+</div>
+{% endif %}
+{% endblock %}

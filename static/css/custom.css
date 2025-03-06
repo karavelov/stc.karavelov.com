@@ -1,0 +1,23 @@
+/* 📂 Стил за иконата на папка */
+.folder-icon {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    background-image: url("../images/folder-icon.svg"); /* Път към SVG */
+    background-size: cover;
+    margin-right: 8px; /* Разстояние между иконата и текста */
+    vertical-align: middle;
+}
+
+/* 📌 Стил за стрелката */
+.arrow-icon {
+    position: absolute;
+    right: 15px;
+    font-size: 14px;
+    transition: transform 0.3s;
+}
+
+/* Завъртане на стрелката при отворено меню */
+.nav-link[aria-expanded="true"] .arrow-icon {
+    transform: rotate(90deg);
+}

@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% if request.user.is_superuser %} <!-- Проверка дали потребителят е администратор -->
+
+<div class="row">
+
+    <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Справка за нови потребители</h4>
+                <hr>
+
+                <div class="card-block">
+
+
+
+                    <form method="get" action="" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label" for="start_date">От дата</label>
+                            <div class="col-sm-10">
+                                <input type="date" id="start_date" name="start_date" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label" for="end_date">До дата</label>
+                            <div class="col-sm-10">
+                                <input type="date" id="end_date" name="end_date" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-10">
+                                <button type="submit" class="btn btn-dark">Изпрати</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                {% if userdetails %}
+                <p style="font-size: 20px;color: blue;text-align: center;">
+                    Данни за периода: "{{ start_date|date:"d.m.Y" }} до {{ end_date|date:"d.m.Y" }}"
+                </p>
+
+                {% include 'includes/messages.html' %}
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="font-weight-bold">#</th>
+                            <th class="font-weight-bold">Потребителско име</th>
+                            <th class="font-weight-bold">Имейл</th>
+                            <th class="font-weight-bold">Телефонен номер</th>
+                            <th class="font-weight-bold">Дата на регистрация</th>
+                            <th class="font-weight-bold">Действие</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in userdetails %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ i.admin.first_name }} {{ i.admin.last_name }}</td>
+                            <td>{{ i.admin.email }}</td>
+                            <td>{{ i.mobilenumber }}</td>
+                            <td>{{ i.regdate_at|date:"d.m.Y H:i ч." }}</td>
+                            <td>
+                                <a href="{% url 'viewusers' i.id %}" class="btn btn-success btn-sm">Преглед</a>
+                                <a href="{% url 'delete_user' i.id %}" class="btn btn-danger btn-sm">Изтриване</a>
+                                <a href="{% url 'view_complaints' i.id %}" class="btn btn-primary btn-sm">Сигнали</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <!-- Странициране -->
+                {% if states.has_other_pages %}
+                <div class="pagination" style="padding-top: 10px; text-align: center;">
+                    <div class="btn-group btn-group-sm" role="group">
+                        {% if states.has_previous %}
+                        <a href="?page=1" class="btn btn-secondary">&laquo; Първа</a>
+                        <a href="?page={{ states.previous_page_number }}" class="btn btn-secondary">Предишна</a>
+                        {% endif %}
+                        <span class="btn disabled">
+                            Страница {{ states.number }} от {{ states.paginator.num_pages }}
+                        </span>
+                        {% if states.has_next %}
+                        <a href="?page={{ states.next_page_number }}" class="btn btn-secondary">Следваща</a>
+                        <a href="?page={{ states.paginator.num_pages }}" class="btn btn-secondary">Последна &raquo;</a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript за гарантирано кликаемо поле -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("start_date").addEventListener("click", function () {
+            this.showPicker();
+        });
+        document.getElementById("end_date").addEventListener("click", function () {
+            this.showPicker();
+        });
+    });
+</script>
+
+{% else %}
+<div class="alert alert-danger" role="alert">
+    <h4 class="alert-heading">Достъп отказан!</h4>
+    <p>Тази страница е достъпна само за администратори.</p>
+</div>
+{% endif %}
+{% endblock %}

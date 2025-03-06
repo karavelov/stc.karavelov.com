@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if request.user.is_superuser %}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<style>
+    /* Loader стил */
+    #loader {
+        display: none;
+        margin: 20px auto;
+        border: 8px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 8px solid #3498db;
+        width: 60px;
+        height: 60px;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+</style>
+
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Архивиране на база данни</h4>
+                <hr>
+
+                {% include 'includes/messages.html' %}
+
+                {% if error %}
+                    <div class="alert alert-danger text-center">
+                        {{ error }}
+                    </div>
+                {% endif %}
+
+                <div id="infoMessage" class="alert alert-info text-center">
+                    ⚠️ Генерирането на архив може да отнеме време и временно да забави системата.
+                </div>
+
+                <div id="loader"></div>
+
+                <div class="text-center mt-4">
+                    <form method="POST" id="backupForm">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary" id="generateButton">
+                            🔄 Генерирай SQL бекъп и архивирай в ZIP
+                        </button>
+                    </form>
+                </div>
+
+                {% if backup_file %}
+                    <div id="downloadSection" class="alert alert-success text-center mt-4">
+                        ✅ Бекъпът е успешно създаден!
+                        <br>
+                        <a href="{{ backup_file }}" class="btn btn-success mt-3">⬇️ Свали ZIP архива</a>
+                    </div>
+                {% else %}
+                    <div id="downloadSection" style="display: none;"></div>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('#backupForm').submit(function() {
+            $('#generateButton').prop('disabled', true).text('⏳ Генериране...');
+            $('#loader').show();
+            $('#infoMessage').text('⏳ Моля, изчакайте... Бекъпът се създава.');
+        });
+    });
+</script>
+
+{% else %}
+<div class="alert alert-danger text-center">
+    ❌ Нямате достъп до тази страница.
+</div>
+{% endif %}
+{% endblock %}
