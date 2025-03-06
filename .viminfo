@@ -18,7 +18,7 @@ $INSERT IGNORE INTO
 
 # Command Line History (newest to oldest):
 :wq
-|2,0,1741142955,,"wq"
+|2,0,1741249032,,"wq"
 :q
 |2,0,1741142867,,"q"
 :Wq
@@ -113,36 +113,50 @@ $INSERT IGNORE INTO
 |3,0,36,0,1,0,1740541158,"s"
 
 # File marks:
-'0  2  0  /tmp/a.sh
-|4,48,2,0,1741142955,"/tmp/a.sh"
-'1  12  0  ~/.bash_profile
-|4,49,12,0,1741142867,"~/.bash_profile"
-'2  21  0  ~/0info_generator.sh
-|4,50,21,0,1741085736,"~/0info_generator.sh"
-'3  1  0  ~/0info_generator.sh
-|4,51,1,0,1741081294,"~/0info_generator.sh"
-'4  36  0  ~/0info_generator.sh
-|4,52,36,0,1741081294,"~/0info_generator.sh"
-'5  150000  0  ~/vehicles_data_separate_inserts.sql
-|4,53,150000,0,1740681317,"~/vehicles_data_separate_inserts.sql"
-'6  1  13  ~/vehicles_data_updated.sql
-|4,54,1,13,1740681062,"~/vehicles_data_updated.sql"
+'0  1  134  ~/README.md
+|4,48,1,134,1741249032,"~/README.md"
+'1  2  0  /tmp/a.sh
+|4,49,2,0,1741142955,"/tmp/a.sh"
+'2  12  0  ~/.bash_profile
+|4,50,12,0,1741142867,"~/.bash_profile"
+'3  21  0  ~/0info_generator.sh
+|4,51,21,0,1741085736,"~/0info_generator.sh"
+'4  1  0  ~/0info_generator.sh
+|4,52,1,0,1741081294,"~/0info_generator.sh"
+'5  36  0  ~/0info_generator.sh
+|4,53,36,0,1741081294,"~/0info_generator.sh"
+'6  150000  0  ~/vehicles_data_separate_inserts.sql
+|4,54,150000,0,1740681317,"~/vehicles_data_separate_inserts.sql"
 '7  1  13  ~/vehicles_data_updated.sql
-|4,55,1,13,1740680748,"~/vehicles_data_updated.sql"
-'8  1  13  ~/cmsapp_vehicles_owners_realistic.sql
-|4,56,1,13,1740641915,"~/cmsapp_vehicles_owners_realistic.sql"
-'9  1  0  ~/remote/autocontroller.py
-|4,57,1,0,1740554988,"~/remote/autocontroller.py"
+|4,55,1,13,1740681062,"~/vehicles_data_updated.sql"
+'8  1  13  ~/vehicles_data_updated.sql
+|4,56,1,13,1740680748,"~/vehicles_data_updated.sql"
+'9  1  13  ~/cmsapp_vehicles_owners_realistic.sql
+|4,57,1,13,1740641915,"~/cmsapp_vehicles_owners_realistic.sql"
 
 # Jumplist (newest first):
+-'  1  134  ~/README.md
+|4,39,1,134,1741249032,"~/README.md"
 -'  2  0  /tmp/a.sh
 |4,39,2,0,1741142955,"/tmp/a.sh"
+-'  2  0  /tmp/a.sh
+|4,39,2,0,1741142955,"/tmp/a.sh"
+-'  1  0  /tmp/a.sh
+|4,39,1,0,1741142950,"/tmp/a.sh"
 -'  1  0  /tmp/a.sh
 |4,39,1,0,1741142950,"/tmp/a.sh"
 -'  12  0  ~/.bash_profile
 |4,39,12,0,1741142867,"~/.bash_profile"
 -'  12  0  ~/.bash_profile
 |4,39,12,0,1741142867,"~/.bash_profile"
+-'  12  0  ~/.bash_profile
+|4,39,12,0,1741142867,"~/.bash_profile"
+-'  12  0  ~/.bash_profile
+|4,39,12,0,1741142867,"~/.bash_profile"
+-'  13  0  ~/.bash_profile
+|4,39,13,0,1741142860,"~/.bash_profile"
+-'  13  0  ~/.bash_profile
+|4,39,13,0,1741142860,"~/.bash_profile"
 -'  13  0  ~/.bash_profile
 |4,39,13,0,1741142860,"~/.bash_profile"
 -'  13  0  ~/.bash_profile
@@ -155,6 +169,22 @@ $INSERT IGNORE INTO
 |4,39,21,0,1741085736,"~/0info_generator.sh"
 -'  21  0  ~/0info_generator.sh
 |4,39,21,0,1741085736,"~/0info_generator.sh"
+-'  21  0  ~/0info_generator.sh
+|4,39,21,0,1741085736,"~/0info_generator.sh"
+-'  21  0  ~/0info_generator.sh
+|4,39,21,0,1741085736,"~/0info_generator.sh"
+-'  21  0  ~/0info_generator.sh
+|4,39,21,0,1741085736,"~/0info_generator.sh"
+-'  21  0  ~/0info_generator.sh
+|4,39,21,0,1741085736,"~/0info_generator.sh"
+-'  1  0  ~/0info_generator.sh
+|4,39,1,0,1741085723,"~/0info_generator.sh"
+-'  1  0  ~/0info_generator.sh
+|4,39,1,0,1741085723,"~/0info_generator.sh"
+-'  1  0  ~/0info_generator.sh
+|4,39,1,0,1741085723,"~/0info_generator.sh"
+-'  1  0  ~/0info_generator.sh
+|4,39,1,0,1741085723,"~/0info_generator.sh"
 -'  1  0  ~/0info_generator.sh
 |4,39,1,0,1741085723,"~/0info_generator.sh"
 -'  1  0  ~/0info_generator.sh
@@ -171,6 +201,22 @@ $INSERT IGNORE INTO
 |4,39,36,0,1741081294,"~/0info_generator.sh"
 -'  36  0  ~/0info_generator.sh
 |4,39,36,0,1741081294,"~/0info_generator.sh"
+-'  36  0  ~/0info_generator.sh
+|4,39,36,0,1741081294,"~/0info_generator.sh"
+-'  36  0  ~/0info_generator.sh
+|4,39,36,0,1741081294,"~/0info_generator.sh"
+-'  36  0  ~/0info_generator.sh
+|4,39,36,0,1741081294,"~/0info_generator.sh"
+-'  36  0  ~/0info_generator.sh
+|4,39,36,0,1741081294,"~/0info_generator.sh"
+-'  1  0  ~/0info_generator.sh
+|4,39,1,0,1741081289,"~/0info_generator.sh"
+-'  1  0  ~/0info_generator.sh
+|4,39,1,0,1741081289,"~/0info_generator.sh"
+-'  1  0  ~/0info_generator.sh
+|4,39,1,0,1741081289,"~/0info_generator.sh"
+-'  1  0  ~/0info_generator.sh
+|4,39,1,0,1741081289,"~/0info_generator.sh"
 -'  1  0  ~/0info_generator.sh
 |4,39,1,0,1741081289,"~/0info_generator.sh"
 -'  1  0  ~/0info_generator.sh
@@ -211,6 +257,38 @@ $INSERT IGNORE INTO
 |4,39,150000,0,1740681317,"~/vehicles_data_separate_inserts.sql"
 -'  150000  0  ~/vehicles_data_separate_inserts.sql
 |4,39,150000,0,1740681317,"~/vehicles_data_separate_inserts.sql"
+-'  150000  0  ~/vehicles_data_separate_inserts.sql
+|4,39,150000,0,1740681317,"~/vehicles_data_separate_inserts.sql"
+-'  150000  0  ~/vehicles_data_separate_inserts.sql
+|4,39,150000,0,1740681317,"~/vehicles_data_separate_inserts.sql"
+-'  150000  0  ~/vehicles_data_separate_inserts.sql
+|4,39,150000,0,1740681317,"~/vehicles_data_separate_inserts.sql"
+-'  150000  0  ~/vehicles_data_separate_inserts.sql
+|4,39,150000,0,1740681317,"~/vehicles_data_separate_inserts.sql"
+-'  150000  0  ~/vehicles_data_separate_inserts.sql
+|4,39,150000,0,1740681317,"~/vehicles_data_separate_inserts.sql"
+-'  150000  0  ~/vehicles_data_separate_inserts.sql
+|4,39,150000,0,1740681317,"~/vehicles_data_separate_inserts.sql"
+-'  150000  0  ~/vehicles_data_separate_inserts.sql
+|4,39,150000,0,1740681317,"~/vehicles_data_separate_inserts.sql"
+-'  150000  0  ~/vehicles_data_separate_inserts.sql
+|4,39,150000,0,1740681317,"~/vehicles_data_separate_inserts.sql"
+-'  150000  0  ~/vehicles_data_separate_inserts.sql
+|4,39,150000,0,1740681317,"~/vehicles_data_separate_inserts.sql"
+-'  150000  0  ~/vehicles_data_separate_inserts.sql
+|4,39,150000,0,1740681317,"~/vehicles_data_separate_inserts.sql"
+-'  150000  0  ~/vehicles_data_separate_inserts.sql
+|4,39,150000,0,1740681317,"~/vehicles_data_separate_inserts.sql"
+-'  150000  0  ~/vehicles_data_separate_inserts.sql
+|4,39,150000,0,1740681317,"~/vehicles_data_separate_inserts.sql"
+-'  150000  0  ~/vehicles_data_separate_inserts.sql
+|4,39,150000,0,1740681317,"~/vehicles_data_separate_inserts.sql"
+-'  150000  0  ~/vehicles_data_separate_inserts.sql
+|4,39,150000,0,1740681317,"~/vehicles_data_separate_inserts.sql"
+-'  150000  0  ~/vehicles_data_separate_inserts.sql
+|4,39,150000,0,1740681317,"~/vehicles_data_separate_inserts.sql"
+-'  150000  0  ~/vehicles_data_separate_inserts.sql
+|4,39,150000,0,1740681317,"~/vehicles_data_separate_inserts.sql"
 -'  1  0  ~/vehicles_data_separate_inserts.sql
 |4,39,1,0,1740681312,"~/vehicles_data_separate_inserts.sql"
 -'  1  0  ~/vehicles_data_separate_inserts.sql
@@ -243,100 +321,29 @@ $INSERT IGNORE INTO
 |4,39,1,0,1740681312,"~/vehicles_data_separate_inserts.sql"
 -'  1  0  ~/vehicles_data_separate_inserts.sql
 |4,39,1,0,1740681312,"~/vehicles_data_separate_inserts.sql"
--'  1  13  ~/vehicles_data_updated.sql
-|4,39,1,13,1740681062,"~/vehicles_data_updated.sql"
--'  1  13  ~/vehicles_data_updated.sql
-|4,39,1,13,1740681062,"~/vehicles_data_updated.sql"
--'  1  13  ~/vehicles_data_updated.sql
-|4,39,1,13,1740681062,"~/vehicles_data_updated.sql"
--'  1  13  ~/vehicles_data_updated.sql
-|4,39,1,13,1740681062,"~/vehicles_data_updated.sql"
--'  1  13  ~/vehicles_data_updated.sql
-|4,39,1,13,1740681062,"~/vehicles_data_updated.sql"
--'  1  13  ~/vehicles_data_updated.sql
-|4,39,1,13,1740681062,"~/vehicles_data_updated.sql"
--'  1  13  ~/vehicles_data_updated.sql
-|4,39,1,13,1740681062,"~/vehicles_data_updated.sql"
--'  1  13  ~/vehicles_data_updated.sql
-|4,39,1,13,1740681062,"~/vehicles_data_updated.sql"
--'  1  13  ~/vehicles_data_updated.sql
-|4,39,1,13,1740681062,"~/vehicles_data_updated.sql"
--'  1  13  ~/vehicles_data_updated.sql
-|4,39,1,13,1740681062,"~/vehicles_data_updated.sql"
--'  1  13  ~/vehicles_data_updated.sql
-|4,39,1,13,1740681062,"~/vehicles_data_updated.sql"
--'  1  13  ~/vehicles_data_updated.sql
-|4,39,1,13,1740681062,"~/vehicles_data_updated.sql"
--'  1  13  ~/vehicles_data_updated.sql
-|4,39,1,13,1740681062,"~/vehicles_data_updated.sql"
--'  1  13  ~/vehicles_data_updated.sql
-|4,39,1,13,1740681062,"~/vehicles_data_updated.sql"
--'  1  13  ~/vehicles_data_updated.sql
-|4,39,1,13,1740681062,"~/vehicles_data_updated.sql"
--'  1  13  ~/vehicles_data_updated.sql
-|4,39,1,13,1740681062,"~/vehicles_data_updated.sql"
--'  1  13  ~/vehicles_data_updated.sql
-|4,39,1,13,1740681062,"~/vehicles_data_updated.sql"
--'  1  13  ~/vehicles_data_updated.sql
-|4,39,1,13,1740681062,"~/vehicles_data_updated.sql"
--'  1  13  ~/vehicles_data_updated.sql
-|4,39,1,13,1740681062,"~/vehicles_data_updated.sql"
--'  1  13  ~/vehicles_data_updated.sql
-|4,39,1,13,1740681062,"~/vehicles_data_updated.sql"
--'  1  13  ~/vehicles_data_updated.sql
-|4,39,1,13,1740681062,"~/vehicles_data_updated.sql"
--'  1  13  ~/vehicles_data_updated.sql
-|4,39,1,13,1740681062,"~/vehicles_data_updated.sql"
--'  1  13  ~/vehicles_data_updated.sql
-|4,39,1,13,1740681062,"~/vehicles_data_updated.sql"
--'  1  13  ~/vehicles_data_updated.sql
-|4,39,1,13,1740681062,"~/vehicles_data_updated.sql"
--'  1  13  ~/vehicles_data_updated.sql
-|4,39,1,13,1740681062,"~/vehicles_data_updated.sql"
--'  1  13  ~/vehicles_data_updated.sql
-|4,39,1,13,1740681062,"~/vehicles_data_updated.sql"
--'  1  13  ~/vehicles_data_updated.sql
-|4,39,1,13,1740681062,"~/vehicles_data_updated.sql"
--'  1  13  ~/vehicles_data_updated.sql
-|4,39,1,13,1740681062,"~/vehicles_data_updated.sql"
--'  1  13  ~/vehicles_data_updated.sql
-|4,39,1,13,1740681062,"~/vehicles_data_updated.sql"
--'  1  13  ~/vehicles_data_updated.sql
-|4,39,1,13,1740681062,"~/vehicles_data_updated.sql"
--'  1  13  ~/vehicles_data_updated.sql
-|4,39,1,13,1740681062,"~/vehicles_data_updated.sql"
--'  1  13  ~/vehicles_data_updated.sql
-|4,39,1,13,1740681062,"~/vehicles_data_updated.sql"
--'  1  13  ~/vehicles_data_updated.sql
-|4,39,1,13,1740680748,"~/vehicles_data_updated.sql"
--'  1  13  ~/vehicles_data_updated.sql
-|4,39,1,13,1740680748,"~/vehicles_data_updated.sql"
--'  1  13  ~/vehicles_data_updated.sql
-|4,39,1,13,1740680748,"~/vehicles_data_updated.sql"
--'  1  13  ~/vehicles_data_updated.sql
-|4,39,1,13,1740680748,"~/vehicles_data_updated.sql"
--'  1  13  ~/vehicles_data_updated.sql
-|4,39,1,13,1740680748,"~/vehicles_data_updated.sql"
--'  1  13  ~/vehicles_data_updated.sql
-|4,39,1,13,1740680748,"~/vehicles_data_updated.sql"
--'  1  13  ~/vehicles_data_updated.sql
-|4,39,1,13,1740680748,"~/vehicles_data_updated.sql"
--'  1  13  ~/vehicles_data_updated.sql
-|4,39,1,13,1740680748,"~/vehicles_data_updated.sql"
--'  1  13  ~/vehicles_data_updated.sql
-|4,39,1,13,1740680748,"~/vehicles_data_updated.sql"
--'  1  13  ~/vehicles_data_updated.sql
-|4,39,1,13,1740680748,"~/vehicles_data_updated.sql"
--'  1  13  ~/vehicles_data_updated.sql
-|4,39,1,13,1740680748,"~/vehicles_data_updated.sql"
--'  1  13  ~/vehicles_data_updated.sql
-|4,39,1,13,1740680748,"~/vehicles_data_updated.sql"
--'  1  13  ~/vehicles_data_updated.sql
-|4,39,1,13,1740680748,"~/vehicles_data_updated.sql"
--'  1  13  ~/vehicles_data_updated.sql
-|4,39,1,13,1740680748,"~/vehicles_data_updated.sql"
+-'  1  0  ~/vehicles_data_separate_inserts.sql
+|4,39,1,0,1740681312,"~/vehicles_data_separate_inserts.sql"
+-'  1  0  ~/vehicles_data_separate_inserts.sql
+|4,39,1,0,1740681312,"~/vehicles_data_separate_inserts.sql"
+-'  1  0  ~/vehicles_data_separate_inserts.sql
+|4,39,1,0,1740681312,"~/vehicles_data_separate_inserts.sql"
+-'  1  0  ~/vehicles_data_separate_inserts.sql
+|4,39,1,0,1740681312,"~/vehicles_data_separate_inserts.sql"
+-'  1  0  ~/vehicles_data_separate_inserts.sql
+|4,39,1,0,1740681312,"~/vehicles_data_separate_inserts.sql"
+-'  1  0  ~/vehicles_data_separate_inserts.sql
+|4,39,1,0,1740681312,"~/vehicles_data_separate_inserts.sql"
+-'  1  0  ~/vehicles_data_separate_inserts.sql
+|4,39,1,0,1740681312,"~/vehicles_data_separate_inserts.sql"
 
 # History of marks within files (newest to oldest):
+
+> ~/README.md
+	*	1741249031	0
+	"	1	134
+	^	1	136
+	.	1	134
+	+	1	134
 
 > /tmp/a.sh
 	*	1741142954	0
